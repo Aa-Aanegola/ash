@@ -73,12 +73,13 @@ void ash_pinfo()
 	char status = fgetc(fp);
 	while(status != ')')
 		status = fgetc(fp);
-	fgetc(fp);
-
+	while(status  == ')')
+		status = fgetc(fp);
+	
 	fscanf(fp, "%c %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld", &status, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &vsize);
 
 	char *out = (char*)malloc(1000*sizeof(char));
-	sprintf(out, "PID -- %d\nProcess Status -- %c\nMemory -- %lld\nExecutable Path -- %s", pid, status, vsize/1024, executable);
+	sprintf(out, "PID -- %d\nProcess Status -- %c\nMemory -- %lld KB\nExecutable Path -- %s", pid, status, vsize/1024, executable);
 	disp(out);
 	newl();
 

@@ -1,39 +1,39 @@
 q
-clear
+cat /proc/21222/status
 
-ls -l
+cat /proc/21222/stat
 
-cd ..
-
-ls -l
+pinfo
 
 q
 
 clear
 
-history 1241
+pinfo
 
-history asf
+q
 
-history 20
+pinfo
 
-history
+q
 
-clear
-
-sex
-
-clear
+pinfo
 
 ps -a
 
-nightswatch -n 1 interrupt
+pinfo
+
+q
 
 clear
 
-nightswatch -n 1 interrupt
+nightswatch -n 1 newborn
 
-ls -l
+clear
 
-ps -a
+sl
+
+sl
+
+q
 
