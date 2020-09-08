@@ -20,6 +20,7 @@ int main()
 	clear_disp();
 	
 	uflag = 0;
+	
 	while(1)
 	{
 		ash_main();

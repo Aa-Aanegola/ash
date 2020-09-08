@@ -12,7 +12,6 @@ void ash_watch()
 {
 	int pause = 5;
 	int flag = -1;
-
 	
 	char *token;
 	char *dup_in = (char*)malloc(1000*sizeof(char));
@@ -70,13 +69,6 @@ void ash_watch()
 		{
 			FILE *fp = fopen("/proc/interrupts", "r");
 			char *buffer = (char*)malloc(200*sizeof(char));
-			fscanf(fp, "%[^ ]", buffer);
-			while(strcmp(buffer, "1:"))
-			{
-				fscanf(fp, "%[^ ]", buffer);
-				fgetc(fp);
-			}
-			int pos = ftell(fp);
 			int num_proc = sysconf(_SC_NPROCESSORS_ONLN);
 			int interr[16];
 
@@ -87,20 +79,26 @@ void ash_watch()
 			disp(buffer);
 			newl();
 
+			fclose(fp);
+
 			while(1)
 			{
-				fseek(fp, 0, pos);
+				fp = fopen("/proc/interrupts", "r");
+				fscanf(fp, "%[^ ]", buffer);
+				while(strcmp(buffer, "1:"))
+				{
+					fscanf(fp, "%[^ ]", buffer);
+					fgetc(fp);
+				}
 				buffer[0] = '\0';
 				for(int i = 0; i<num_proc; i++)
 					fscanf(fp, "%d", &(interr[i]));
 				for(int i = 0; i<num_proc; i++)
 					sprintf(buffer, "%s%d\t", buffer, interr[i]);
-				sprintf(buffer, "%d", interr[6]);
 				disp(buffer);
 				newl();
 
 				fclose(fp);
-				fp = fopen("/proc/interrupts", "r");
 				sleep(pause);
 			}
 		}

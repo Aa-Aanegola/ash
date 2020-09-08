@@ -39,5 +39,4 @@ char target[1000];
 
 // Universal flag to signify exit from program
 int uflag;
-
 #endif

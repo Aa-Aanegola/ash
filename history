@@ -1,39 +1,39 @@
 q
-history
-
-q
-
 clear
 
-history
-
-ls /
-
-ls
-
-history
+ls -l
 
 cd ..
 
-ls
-
-history
-
-pwd
+ls -l
 
 q
 
 clear
 
-history
+history 1241
 
-q
-
-clear
+history asf
 
 history 20
 
-history as
+history
 
-history a a
+clear
+
+sex
+
+clear
+
+ps -a
+
+nightswatch -n 1 interrupt
+
+clear
+
+nightswatch -n 1 interrupt
+
+ls -l
+
+ps -a
 
