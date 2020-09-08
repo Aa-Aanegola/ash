@@ -39,6 +39,8 @@ void ash_main()
 		
 		get_command();
 		
+		ash_history_write();
+
 		if(!strcmp(command_word, "q") || !strcmp(command_word, "quit") || !strcmp(command_word, "exit"))
 		{
 			uflag = 1;
@@ -57,6 +59,8 @@ void ash_main()
 			ash_ls();
 		else if(!strcmp(command_word, "pinfo"))
 			ash_pinfo();
+		else if(!strcmp(command_word, "history"))
+			ash_history_read();
 		else
 			ash_general();
 	}

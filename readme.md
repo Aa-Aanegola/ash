@@ -8,6 +8,7 @@ Semicolon seperated commands provide the ability to run multiple commands concur
 Implementations of ls, cd, echo etc.
 A new pinfo function that allows you to view basic information of any process.
 Background process functionality allows you to run any command in the background, and still use your shell.
+A history function to keep a track of entered commands.
 ## Future updates
 Support for piping, redirection, and proper exit handling.
 Color schemes, and output formatting for visual aesthetics.

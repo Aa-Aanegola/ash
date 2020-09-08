@@ -11,35 +11,33 @@
 void ash_pinfo()
 {	
 	pid_t pid;
+	char *temp = (char*)malloc(100*sizeof(char));			
+		
 	if(strlen(read_in) == 5)
 		pid = getpid();
+
 	else
 	{
-		char *temp;
-		temp = (char*)malloc(100*sizeof(char));
 		int pos = 0;
 		for(int i = 6; i<strlen(read_in); i++)
 			temp[pos++] = read_in[i];
 		temp[pos] = '\0';
 		sscanf(temp, "%d", &pid);
-		free(temp);
 	}
+	
+	sprintf(temp, "/proc/%d", pid);
+	DIR *dir = opendir(temp);
 
-	if(pid == 0 || pid == -1 || pid == 1)
-	{
-		write(1, "ash: pinfo: Invalid process ID", strlen("ash: pinfo: Invalid process ID"));
-		newl();
-		return;
-	}
-
-	int ret = kill(pid, 0);
-
-	if(ret == -1)
+	if(!dir)
 	{
 		write(1, "ash: pinfo: Process ID doesn't exist", strlen("ash: pinfo: Process ID doesn't exist"));
 		newl();
+		closedir(dir);
+		free(temp);
 		return;
 	}
+	closedir(dir);
+	free(temp);	
 
 	char *path = (char*)malloc(200*sizeof(char));
 	sprintf(path, "/proc/%d/exe", pid);

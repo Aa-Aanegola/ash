@@ -27,7 +27,7 @@ void ash_watch()
 			break;
 		if(token[0] == '-')
 		{
-			if(token[2] || token[1] != 'n')
+			if(token[1] != 'n')
 				break;
 			token = strtok(0, " ");
 			if(token == NULL)
@@ -95,6 +95,7 @@ void ash_watch()
 					fscanf(fp, "%d", &(interr[i]));
 				for(int i = 0; i<num_proc; i++)
 					sprintf(buffer, "%s%d\t", buffer, interr[i]);
+				sprintf(buffer, "%d", interr[6]);
 				disp(buffer);
 				newl();
 

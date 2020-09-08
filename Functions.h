@@ -68,4 +68,8 @@ handler* install_signal(int signum, handler* handler);
 
 void child_handler(int sig, siginfo_t* info, void* vp);
 
+void ash_history_read();
+
+void ash_history_write();
+
 #endif
