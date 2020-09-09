@@ -35,7 +35,7 @@ Implementation of the ls command. Has support for the -a and -l flags.
 #### ash_pinfo.c
 Pinfo is a command added to ash. It displays the process information of the process specified(by pid) or of the current process if a pid is not specified.
 #### ash_general.c
-In case ash is requested to run a command through exec, this function is called. Forks a child process to run the desired command. Contains support for background processes using '&'.
+In case ash is requested to run a command through exec, this function is called. Forks a child process to run the desired command. Contains support for background processes using '&'. Use the command list to list all the current background processes.
 #### ash_history.c
 Contains implementation to read and write from the history file. the history command is run by entering history, or history <num> which displays <num> previous commands.
 #### ash_watch.c

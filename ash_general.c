@@ -22,6 +22,13 @@ void ash_general()
 	clean_string(read_in);
 	get_command();
 
+	if(is_background && num_children == POOL_SIZE)
+	{
+		write(2, "ash: Background process pool is full", strlen("ash: Background process pool is full"));
+		newl();
+		return;
+	}
+
 	int pid = fork();
 
 	if(pid < 0)

@@ -21,6 +21,7 @@ int main()
 	init_child_proc();
 	
 	uflag = 0;
+	num_children = 0;
 	
 	while(1)
 	{

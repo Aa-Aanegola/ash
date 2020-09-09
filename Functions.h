@@ -79,9 +79,11 @@ void ash_history_write();
 // Initializes the child pool to NULL
 void init_child_proc();
 
-
 // Pushed a child process (if background) into the child pool
 void push_child(pid_t pid);
+
+// Lists all background processes
+void back_list();
 
 // Kills all children before exiting the program
 void child_kill();

@@ -63,6 +63,8 @@ void ash_main()
 			ash_history_read();
 		else if(!strcmp(command_word, "nightswatch"))
 			ash_watch();
+		else if(!strcmp(command_word, "list"))
+			back_list();
 		else
 			ash_general();
 	}

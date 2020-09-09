@@ -1,19 +1,29 @@
 q
-clear
-
-neofetch &
-
-exit
+list
 
 vim &
 
-q
+ls -al
 
 clear
 
-kill -9 9137 9139 9140
+ls
+
+clear
+
+gedit &
+
+gedit &
+
+clear
+
+kill -9 4589
 
 ps -a
+
+kill -9 4859
+
+list
 
 vim &
 
@@ -23,17 +33,7 @@ vim &
 
 q
 
-vim &
+cellar
 
-q
-
-ps -a
-
-vim &
-
-ps -a
-
-q
-
-vim &
+clear
 

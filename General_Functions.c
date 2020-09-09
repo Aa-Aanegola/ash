@@ -225,11 +225,25 @@ void push_child(pid_t pid)
 		{
 			proc_array[i].pid = pid;
 			strcpy(proc_array[i].name, command_word);
+			num_children++;
 			return;
 		}
 	}	
 	write(2, "ash: general: Process insertion failed", strlen("ash: general: Process insertion failed"));
 	newl();
+}
+
+void back_list()
+{
+	char *buffer = (char*)malloc(MAX_COMM*sizeof(char));
+	for(int i = 0; i<POOL_SIZE; i++)
+	{
+		if(proc_array[i].pid != -1)
+		{
+			sprintf(buffer, "%d\t%s\n", proc_array[i].pid, proc_array[i].name);
+			disp(buffer);
+		}
+	}
 }
 
 

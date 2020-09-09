@@ -42,4 +42,7 @@ int uflag;
 
 // Pool for all child processes
 child_proc proc_array[POOL_SIZE];
+
+// Number of children currently in the pool
+int num_children;
 #endif
