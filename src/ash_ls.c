@@ -107,6 +107,8 @@ void ash_ls()
 
 		if(dir)
 		{	
+			long long total = 0;
+
 			if(dir_count > 1)
 			{
 				disp(spec_dir);
@@ -129,6 +131,7 @@ void ash_ls()
 						size[0] = strlen(permissions);
 					
 					struct stat st;
+					total += (st.st_blocks*512+1023)/1024;
 					stat(fname, &st);
 					sprintf(temp, "%ld", st.st_nlink);
 					if(strlen(temp) > size[1])
@@ -152,6 +155,10 @@ void ash_ls()
 			closedir(dir);
 			
 			dir = opendir(target);
+
+			sprintf(temp, "total %lld\n", total);
+			disp(temp);
+
 			while((entry = readdir(dir)) != NULL)
 			{
 				if(!flag[1] && entry->d_name[0] == '.')

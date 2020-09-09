@@ -1,39 +1,39 @@
 q
 clear
 
-vim &
+ls -l
 
-echo
+ls -al
 
-ls -al . . .
+ls -al
 
 q
 
 clear
 
-ls -al / . ..
+ls -al
+
+ls -al
+
+ls -al
 
 q
 
-clear
+ls -al
 
-ls -al /
+ls -a
 
-q
+ls -al
 
-ls -l
+ls -al
 
-q
+ls -al
 
-ls -l
-
-q
-
-ls -l
+ls -al
 
 q
 
-make
+ls -al
 
-ls -l
+q
 
