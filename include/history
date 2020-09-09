@@ -1,0 +1,39 @@
+q
+clear
+
+clear
+
+pwd
+
+clear
+
+ls -al
+
+ls
+
+cd src
+
+ls
+
+cd ~
+
+clear
+
+ls
+
+cd /media
+
+cd ~
+
+cd ..
+
+history 10
+
+history 5
+
+history
+
+clear
+
+ls
+
