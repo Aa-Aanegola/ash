@@ -19,7 +19,7 @@ Contains definitions of all functions.
 Contains definitions of all global variables used in the shell. Global variables are used instead of local variables to simplify function calls.
 #### history
 Contains 20 previous commands. Used for the history shell command (read and write).
-### C program files
+### src
 #### Main.c
 Initializes the signal handler, display, home directory etc. Runs infinitely calling the ash_main function. Before exiting kills all background processes spawned.  
 #### ash_main.c
@@ -42,7 +42,7 @@ In case ash is requested to run a command through exec, this function is called.
 Contains implementation to read and write from the history file. the history command is run by entering history, or history <num> which displays <num> previous commands.
 #### ash_watch.c
 Contains implementation for the nightswatch command, run using nightswatch -n <num> interrupt. Newborn functionality is absent (tracking new process creation). The function keeps a track of number of keyboard interrupts per CPU.
-### Extra
+### extra
 #### Makefile
 Contains the series of instructions required to compile the code, and create the executable. Run the program using the make command.
 ## Future updates
