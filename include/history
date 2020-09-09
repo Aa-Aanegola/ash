@@ -1,39 +1,39 @@
 q
 clear
 
-clear
+vim &
 
-pwd
+echo
 
-clear
+ls -al . . .
 
-ls -al
-
-ls
-
-cd src
-
-ls
-
-cd ~
+q
 
 clear
 
-ls
+ls -al / . ..
 
-cd /media
-
-cd ~
-
-cd ..
-
-history 10
-
-history 5
-
-history
+q
 
 clear
 
-ls
+ls -al /
+
+q
+
+ls -l
+
+q
+
+ls -l
+
+q
+
+ls -l
+
+q
+
+make
+
+ls -l
 

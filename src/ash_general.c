@@ -78,7 +78,7 @@ void ash_general()
 		if(is_background)
 		{
 			push_child(pid);
-			sleep(1);
+			usleep(100000);
 			return;
 		}
 		waitpid(pid, NULL, 0);

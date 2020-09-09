@@ -44,7 +44,7 @@ void initialize_disp()
 	passwd = getpwuid(getuid());
 	gethostname(hname, sizeof(hname));
 
-	sprintf(display_name,"<%s@%s:~>", passwd->pw_name, hname);
+	sprintf(display_name,"<%s@%s:~> ", passwd->pw_name, hname);
 }
 
 
@@ -59,13 +59,13 @@ void update_disp()
 	
 	if(strlen(cur_dir) < strlen(home_dir))
 	{
-		sprintf(display_name,"<%s@%s:%s>", passwd->pw_name, hname, cur_dir);
+		sprintf(display_name,"<%s@%s:%s> ", passwd->pw_name, hname, cur_dir);
 		return;
 	}
 
 	if(!strcmp(cur_dir, home_dir))
 	{
-		sprintf(display_name, "<%s@%s:~>", passwd->pw_name, hname);
+		sprintf(display_name, "<%s@%s:~> ", passwd->pw_name, hname);
 		return;
 	}
 
@@ -76,7 +76,7 @@ void update_disp()
 	
 	if(!sub_home)
 	{
-		sprintf(display_name,"<%s@%s:%s>", passwd->pw_name, hname, cur_dir);
+		sprintf(display_name,"<%s@%s:%s> ", passwd->pw_name, hname, cur_dir);
 		return;
 	}
 
@@ -89,7 +89,7 @@ void update_disp()
 		dir[pos++] = cur_dir[i];
 	dir[pos] = '\0';
 
-	sprintf(display_name,"<%s@%s:%s>", passwd->pw_name, hname, dir);
+	sprintf(display_name,"<%s@%s:%s> ", passwd->pw_name, hname, dir);
 
 	free(dir);	
 }
