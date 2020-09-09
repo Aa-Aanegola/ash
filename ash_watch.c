@@ -14,7 +14,7 @@ void ash_watch()
 	int flag = -1;
 	
 	char *token;
-	char *dup_in = (char*)malloc(1000*sizeof(char));
+	char *dup_in = (char*)malloc(MAX_COMM*sizeof(char));
 	strcpy(dup_in, read_in);
 
 	token = strtok(dup_in, " ");
@@ -49,7 +49,7 @@ void ash_watch()
 
 	if(flag == -1)
 	{
-		write(1, "ash: nightswatch: Invalid option", strlen("ash: nightswatch: Invalid option"));
+		write(2, "ash: nightswatch: Invalid option", strlen("ash: nightswatch: Invalid option"));
 		newl();
 		return;
 	}
@@ -60,7 +60,7 @@ void ash_watch()
 
 		if(pid < 0)
 		{
-			write(1, "ash: nightswatch: Process failed", strlen("ash: nightswatch: Process failed"));
+			write(2, "ash: nightswatch: Process failed", strlen("ash: nightswatch: Process failed"));
 			newl();
 			return;
 		}
@@ -68,7 +68,7 @@ void ash_watch()
 		if(pid == 0)
 		{
 			FILE *fp = fopen("/proc/interrupts", "r");
-			char *buffer = (char*)malloc(200*sizeof(char));
+			char *buffer = (char*)malloc(MIN_COMM*sizeof(char));
 			int num_proc = sysconf(_SC_NPROCESSORS_ONLN);
 			int interr[16];
 

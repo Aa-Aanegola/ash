@@ -64,12 +64,25 @@ void ash_general();
 // Implementation of the nightswatch command
 void ash_watch();
 
+// Generic signal hanfler template
 handler* install_signal(int signum, handler* handler);
 
+// Specific child handler that takes care of SIGCHLD signal
 void child_handler(int sig, siginfo_t* info, void* vp);
 
+// Reads from history, implementation of history command
 void ash_history_read();
 
+// Writes every command to the history
 void ash_history_write();
 
+// Initializes the child pool to NULL
+void init_child_proc();
+
+
+// Pushed a child process (if background) into the child pool
+void push_child(pid_t pid);
+
+// Kills all children before exiting the program
+void child_kill();
 #endif

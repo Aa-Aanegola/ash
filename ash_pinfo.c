@@ -11,7 +11,7 @@
 void ash_pinfo()
 {	
 	pid_t pid;
-	char *temp = (char*)malloc(100*sizeof(char));			
+	char *temp = (char*)malloc(MIN_COMM*sizeof(char));			
 		
 	if(strlen(read_in) == 5)
 		pid = getpid();
@@ -30,7 +30,7 @@ void ash_pinfo()
 
 	if(!dir)
 	{
-		write(1, "ash: pinfo: Process ID doesn't exist", strlen("ash: pinfo: Process ID doesn't exist"));
+		write(2, "ash: pinfo: Process ID doesn't exist", strlen("ash: pinfo: Process ID doesn't exist"));
 		newl();
 		closedir(dir);
 		free(temp);
@@ -41,8 +41,8 @@ void ash_pinfo()
 
 	char *path = (char*)malloc(200*sizeof(char));
 	sprintf(path, "/proc/%d/exe", pid);
-	char *executable = (char*)malloc(200*sizeof(char));
-	for(int i = 0; i<200; i++)
+	char *executable = (char*)malloc(MIN_COMM*sizeof(char));
+	for(int i = 0; i<MIN_COMM; i++)
 		executable[i] = '\0';
 	readlink(path, executable, 200);
 
@@ -78,7 +78,7 @@ void ash_pinfo()
 	
 	fscanf(fp, "%c %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld %lld", &status, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &dummy, &vsize);
 
-	char *out = (char*)malloc(1000*sizeof(char));
+	char *out = (char*)malloc(MAX_COMM*sizeof(char));
 	sprintf(out, "PID -- %d\nProcess Status -- %c\nMemory -- %lld KB\nExecutable Path -- %s", pid, status, vsize/1024, executable);
 	disp(out);
 	newl();

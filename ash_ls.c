@@ -12,7 +12,7 @@ void ash_ls()
 {
 	int flag[3] = {0, 0, 0};
 	char *token;
-	char *dup_in = (char*)malloc(1000*sizeof(char));
+	char *dup_in = (char*)malloc(MAX_COMM*sizeof(char));
 	strcpy(dup_in, read_in);
 
 	token = strtok(dup_in, " ");
@@ -40,7 +40,7 @@ void ash_ls()
 
 	if(flag[2])
 	{
-		write(1, "ash: ls: Invalid option", sizeof("ash: ls: Invalid option"));
+		write(2, "ash: ls: Invalid option", sizeof("ash: ls: Invalid option"));
 		newl();
 		return;
 	}
@@ -69,7 +69,7 @@ void ash_ls()
 			closedir(dir);
 		else
 		{
-			write(1, "ash: ls: Specified directory isn't a directory/doesn't exist", strlen("ash: ls: Specified directory isn't a directory/doesn't exist"));
+			write(2, "ash: ls: Specified directory isn't a directory/doesn't exist", strlen("ash: ls: Specified directory isn't a directory/doesn't exist"));
 			newl();
 			return;
 		}

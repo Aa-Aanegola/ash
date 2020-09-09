@@ -11,7 +11,7 @@
 void ash_echo()
 {
 	char *buff;
-	buff = (char*)malloc(1000*sizeof(char));
+	buff = (char*)malloc(MAX_COMM*sizeof(char));
 	int pos = 0;
 	for(int i = 4; i<strlen(read_in); i++)
 		buff[pos++] = read_in[i];

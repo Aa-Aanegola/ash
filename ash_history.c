@@ -16,17 +16,17 @@ void ash_history_read()
 			space++;
 	if(space > 1)
 	{
-		write(1, "ash: history: invalid arguments", strlen("ash: history: invalid arguments"));
+		write(2, "ash: history: invalid arguments", strlen("ash: history: invalid arguments"));
 		newl();
 		return;
 	}
 
-	char *path = (char*)malloc(200*sizeof(char));
+	char *path = (char*)malloc(MIN_COMM*sizeof(char));
 	sprintf(path, "/proc/%d/exe", getpid());
-	char *executable = (char*)malloc(200*sizeof(char));
-	for(int i = 0; i<200; i++)
+	char *executable = (char*)malloc(MIN_COMM*sizeof(char));
+	for(int i = 0; i<MIN_COMM; i++)
 		executable[i] = '\0';
-	readlink(path, executable, 200);
+	readlink(path, executable, MIN_COMM);
 
 	for(int i = strlen(executable)-1; i>=0; i--)
 	{
@@ -39,13 +39,13 @@ void ash_history_read()
 	strcat(executable, "history");
 
 	FILE *read_file = fopen(executable, "a+");
-	char *buffer = (char*)malloc(100*sizeof(char));
+	char *buffer = (char*)malloc(MIN_COMM*sizeof(char));
 
 	int c = 10;
 	
 	if(space)
 	{
-		char *dup_in = (char*)malloc(1000*sizeof(char));
+		char *dup_in = (char*)malloc(MAX_COMM*sizeof(char));
 		strcpy(dup_in, read_in);
 
 		char *token;
@@ -56,14 +56,14 @@ void ash_history_read()
 
 		if(!c)
 		{
-			write(1, "ash: history: invalid argument", strlen("ash: history: invalid argument"));
+			write(2, "ash: history: invalid argument", strlen("ash: history: invalid argument"));
 			newl();
 			return;
 		}
 	}
 
 
-	while(fgets(buffer,  1000, read_file)!=NULL && c)
+	while(fgets(buffer, MAX_COMM, read_file)!=NULL && c)
 	{
 		if(!strcmp(buffer, "\n"))
 			continue;
@@ -79,14 +79,14 @@ void ash_history_read()
 
 void ash_history_write()
 {
-	char *path = (char*)malloc(200*sizeof(char));
+	char *path = (char*)malloc(MIN_COMM*sizeof(char));
 	sprintf(path, "/proc/%d/exe", getpid());
-	char *read_executable = (char*)malloc(200*sizeof(char));
-	char *write_executable = (char*)malloc(200*sizeof(char));
+	char *read_executable = (char*)malloc(MIN_COMM*sizeof(char));
+	char *write_executable = (char*)malloc(MIN_COMM*sizeof(char));
 
-	for(int i = 0; i<200; i++)
+	for(int i = 0; i<MIN_COMM; i++)
 		read_executable[i] = '\0';
-	readlink(path, read_executable, 200);
+	readlink(path, read_executable, MIN_COMM);
 
 	for(int i = strlen(read_executable)-1; i>=0; i--)
 	{
@@ -107,13 +107,13 @@ void ash_history_write()
 
 
 	FILE *write_file = fopen(write_executable, "w");
-	char *buffer = (char*)malloc(100*sizeof(char));
+	char *buffer = (char*)malloc(MAX_COMM*sizeof(char));
 
 	int c = 1;
 	fputs(read_in, write_file);
 	fputs("\n", write_file);
 
-	while(fgets(buffer,  1000, read_file)!=NULL && c<20)
+	while(fgets(buffer,  MAX_COMM, read_file)!=NULL && c<HIST_SIZE)
 	{
 		if(!strcmp(buffer, "\n"))
 			continue;

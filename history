@@ -1,39 +1,39 @@
 q
-cat /proc/21222/status
+clear
 
-cat /proc/21222/stat
+neofetch &
 
-pinfo
+exit
+
+vim &
 
 q
 
 clear
 
-pinfo
-
-q
-
-pinfo
-
-q
-
-pinfo
+kill -9 9137 9139 9140
 
 ps -a
 
-pinfo
+vim &
+
+vim &
+
+vim &
 
 q
 
-clear
-
-nightswatch -n 1 newborn
-
-clear
-
-sl
-
-sl
+vim &
 
 q
+
+ps -a
+
+vim &
+
+ps -a
+
+q
+
+vim &
 

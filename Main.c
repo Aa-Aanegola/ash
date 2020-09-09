@@ -18,6 +18,7 @@ int main()
 	initialize_disp();
 	get_home();
 	clear_disp();
+	init_child_proc();
 	
 	uflag = 0;
 	
@@ -27,6 +28,7 @@ int main()
 		if(uflag)
 		{
 			// Exits the program, but doesn't handle children
+			child_kill();
 			exit(0);
 		}
 	}

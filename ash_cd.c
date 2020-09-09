@@ -12,7 +12,7 @@ void ash_cd()
 {
 	if(strlen(read_in) <= 3)
 	{
-		write(1, "ash: cd: Too few arguments", strlen("ash: cd: Too few arguments"));
+		write(2, "ash: cd: Too few arguments", strlen("ash: cd: Too few arguments"));
 		newl();
 		return;
 	}
@@ -20,7 +20,7 @@ void ash_cd()
 	for(int i = 3; i<strlen(read_in); i++)
 		if(read_in[i] == ' ')
 		{
-			write(1, "ash: cd: Too many arguments", strlen("ash: cd: Too many arguments"));
+			write(2, "ash: cd: Too many arguments", strlen("ash: cd: Too many arguments"));
 			newl();
 			return;
 		}
@@ -35,14 +35,14 @@ void ash_cd()
 	struct stat st;
 	if(stat(target, &st) != 0)
 	{
-		write(1, "ash: cd: Path specified does not exist", strlen("ash: cd: Path specified does not exist"));
+		write(2, "ash: cd: Path specified does not exist", strlen("ash: cd: Path specified does not exist"));
 		newl();
 		return;
 	}
 
 	if(!S_ISDIR(st.st_mode))
 	{
-		write(1, "ash: cd: Path specified is not a directory", strlen("ash: cd: Path specified is not a directory"));
+		write(2, "ash: cd: Path specified is not a directory", strlen("ash: cd: Path specified is not a directory"));
 		newl();
 		return;
 	}

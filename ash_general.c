@@ -26,7 +26,7 @@ void ash_general()
 
 	if(pid < 0)
 	{
-		write(1, "ash: New process creation failed", strlen("ash: New process creation failed"));
+		write(2, "ash: New process creation failed", strlen("ash: New process creation failed"));
 		newl();
 		return;
 	}
@@ -40,7 +40,7 @@ void ash_general()
 		char *args[num_tok+1];
 		args[num_tok] = NULL;
 		for(int i = 0; i<num_tok; i++)
-			args[i] = (char*)malloc(100*sizeof(char));
+			args[i] = (char*)malloc(MIN_COMM*sizeof(char));
 		int pos = 0, point = 0;
 		for(int i = 0; i<strlen(read_in); i++)
 		{
@@ -59,7 +59,7 @@ void ash_general()
 
 		if(execvp(args[0], args) < 0)
 		{
-			write(1, "ash: Command not found", strlen("ash: Command not found"));
+			write(2, "ash: Command not found", strlen("ash: Command not found"));
 			newl();
 			exit(0);
 		}
@@ -70,6 +70,7 @@ void ash_general()
 	{
 		if(is_background)
 		{
+			push_child(pid);
 			sleep(1);
 			return;
 		}

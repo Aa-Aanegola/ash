@@ -207,6 +207,31 @@ void check_dir()
 	strcpy(target, spec_dir);
 }
 
+void init_child_proc()
+{
+	for(int i = 0; i<POOL_SIZE; i++)
+	{
+		proc_array[i].pid = -1;
+		proc_array[i].name[0] = '\0';
+	}
+}
+
+//
+void push_child(pid_t pid)
+{
+	for(int i = 0; i<POOL_SIZE; i++)
+	{
+		if(proc_array[i].pid == -1)
+		{
+			proc_array[i].pid = pid;
+			strcpy(proc_array[i].name, command_word);
+			return;
+		}
+	}	
+	write(2, "ash: general: Process insertion failed", strlen("ash: general: Process insertion failed"));
+	newl();
+}
+
 
 // Declaration of the sigaction handler, copied from an online resource
 handler* install_signal(int signum, handler* handler)
@@ -220,7 +245,7 @@ handler* install_signal(int signum, handler* handler)
 	new_action.sa_flags = SA_RESTART|SA_SIGINFO;
 
 	if (sigaction(signum, &new_action, &old_action) < 0)
-		write(1, "ash: signal encountered an error", strlen("ash: signal encountered an error"));                                                         
+		write(2, "ash: signal encountered an error", strlen("ash: signal encountered an error"));                                                         
     return (old_action.sa_sigaction);                                           
 }
 
@@ -228,50 +253,37 @@ handler* install_signal(int signum, handler* handler)
 // The function that is called whenever a SIGCHLD signal is received. This was done to ensure that child exit handling is asynchronous
 void child_handler(int sig, siginfo_t* info, void* vp)
 {
-	int pid = info->si_pid;
+	int status;
+	int pid;
+	char buffer[MAX_COMM];
 
-	char path[256];
-	sprintf(path, "/proc/%d/stat", pid);
-
-	FILE *fp = fopen(path, "r");
-
-	if(fp == NULL)
-		return;
-
-	char status = 'a';
-
-	while(status != '(')
-		status = fgetc(fp);
-
-
-	status = fgetc(fp);
-
-	int pos = 0; 
-	char buffer[256];
-
-
-	while(status != ')')
+	int term = 0;
+	while((pid = waitpid(-1, &status, WNOHANG)) > 0)
 	{
-		buffer[pos++] = status;
-		status = fgetc(fp);
+		term = 1;
+		for(int i = 0; i<POOL_SIZE; i++)
+		{
+			if(proc_array[i].pid == pid)
+			{
+				sprintf(buffer, "\n%s with pid %d exited %s", proc_array[i].name, pid, WIFEXITED(status) == 0 ? "abnormally" : "normally");
+				write(1, buffer, strlen(buffer));
+				proc_array[i].pid = -1;
+				break;
+			}
+		}
 	}
-	buffer[pos] = '\0';
-
-	fgetc(fp);
-	
-	fscanf(fp, "%c", &status);
-
-	if(status == 'z' || status == 'Z')
+	if(term)
 	{
-		int ex;
-		waitpid(pid, &ex, WNOHANG);
-		if(ex != 0)
-			sprintf(buffer, "%s with pid %d exited abnormally\n", buffer, pid);
-		else
-			sprintf(buffer, "%s with pid %d exited normally\n", buffer, pid);
-		
 		newl();
-		disp(buffer);
 		disp(display_name);
+	}
+}
+
+void child_kill()
+{
+	for(int i = 0; i<POOL_SIZE; i++)
+	{
+		if(proc_array[i].pid != -1)
+			kill(proc_array[i].pid, SIGKILL);
 	}
 }
