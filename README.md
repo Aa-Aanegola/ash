@@ -10,13 +10,15 @@ A new pinfo function that allows you to view basic information of any process.
 Background process functionality allows you to run any command in the background, and still use your shell.  
 A history function to keep a track of entered commands.  
 ## File Structure
-### Header files
+### include
 #### Shell.h
 Contains all the header files that are used for the functions in the shell. Also has some definitions on sizes, and for structures used in the program.
 #### Functions.h
-Contains definitions of all functions. Enables modularity.
+Contains definitions of all functions.
 #### Variables.h
 Contains definitions of all global variables used in the shell. Global variables are used instead of local variables to simplify function calls.
+#### history
+Contains 20 previous commands. Used for the history shell command (read and write).
 ### C program files
 #### Main.c
 Initializes the signal handler, display, home directory etc. Runs infinitely calling the ash_main function. Before exiting kills all background processes spawned.  
@@ -43,8 +45,6 @@ Contains implementation for the nightswatch command, run using nightswatch -n <n
 ### Extra
 #### Makefile
 Contains the series of instructions required to compile the code, and create the executable. Run the program using the make command.
-#### history
-Contains previous 20 commands (including current). Used in the history command.
 ## Future updates
 Support for piping, redirection, and proper exit handling.  
 Color schemes, and output formatting for visual aesthetics.  
