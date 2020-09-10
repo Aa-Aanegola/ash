@@ -117,4 +117,52 @@ void ash_watch()
 			}
 		}
 	}
+
+	else if(flag == 1)
+	{
+		int pid = fork();
+
+		if(pid < 0)
+		{
+			write(2, "ash: nightswatch: Process failed", strlen("ash: nightswatch: Process failed"));
+			newl();
+			return;
+		}
+
+		if(pid == 0)
+		{
+			while(1)
+			{
+				FILE *fp = fopen("/proc/loadavg", "r");
+				char *buffer = (char*)malloc(MIN_COMM*sizeof(char));
+				
+				int c = 0;
+				char temp;
+				while(c < 4)
+				{	
+					temp = fgetc(fp);
+					if(temp == ' ')
+						c++;
+				}
+
+				fgets(buffer, MIN_COMM, fp);
+				disp(buffer);
+				sleep(pause);
+			}
+		}
+
+		else
+		{
+			char ch;
+			while(1)
+			{
+				ch = getchar();
+				if(ch == 'q')
+				{
+					kill(pid, SIGKILL);
+					return;
+				}
+			}
+		}	
+	}
 }

@@ -1,11 +1,7 @@
 q
 clear
 
-ls -l
-
-ls -al
-
-ls -al
+nightswatch -n 2 newborn
 
 q
 
@@ -13,27 +9,31 @@ clear
 
 ls -al
 
-ls -al
+cd /
+
+clear
 
 ls -al
+
+ls
+
+cd src
+
+clear
+
+nightswatch -n 1 newborn
 
 q
 
-ls -al
+clear
 
-ls -a
+clear
 
-ls -al
+claer
 
-ls -al
+nightswatch -n 1 newborn
 
-ls -al
+nightswatch -n 1 newborn
 
-ls -al
-
-q
-
-ls -al
-
-q
+nightswatch
 

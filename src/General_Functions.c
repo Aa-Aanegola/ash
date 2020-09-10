@@ -229,6 +229,7 @@ void push_child(pid_t pid)
 			return;
 		}
 	}	
+	
 	write(2, "ash: general: Process insertion failed", strlen("ash: general: Process insertion failed"));
 	newl();
 }
