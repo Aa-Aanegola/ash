@@ -1,39 +1,39 @@
 q
 clear
 
-ps -a
+history 5
 
-list
+history
 
-clear
+ls
 
-kill -9 14467
+ls -al eg
 
-list
+ls -al 55
 
-clear
-
-list
-
-vim &
+ls -al q
 
 clear
 
-nightswatch interrupt
+ls -alaalaq ..
 
-q
+ls -al ..
 
-pinfo
+ls -al /
 
-q
+ls -al
+
+clear
+
+clear
+
+ls -al /home/aakash
+
+ls -al /media
+
+ls -al . .. /
 
 clear
 
 ls -al
-
-ls -a
-
-clear
-
-ls
 

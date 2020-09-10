@@ -132,7 +132,7 @@ void ash_ls()
 					
 					struct stat st;
 					total += (st.st_blocks*512+1023)/1024;
-					stat(fname, &st);
+					lstat(fname, &st);
 					sprintf(temp, "%ld", st.st_nlink);
 					if(strlen(temp) > size[1])
 						size[1] = strlen(temp);
@@ -157,7 +157,8 @@ void ash_ls()
 			dir = opendir(target);
 
 			sprintf(temp, "total %lld\n", total);
-			disp(temp);
+			if(flag[0])
+				disp(temp);
 
 			while((entry = readdir(dir)) != NULL)
 			{
@@ -171,7 +172,7 @@ void ash_ls()
 					write(1, " ", 1);
 
 					struct stat st;
-					stat(fname, &st);
+					lstat(fname, &st);
 					sprintf(temp, "%ld", st.st_nlink);
 					for(int i = 0; i<size[1]-strlen(temp); i++)
 						write(1, " ", 1);	
