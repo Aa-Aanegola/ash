@@ -10,7 +10,10 @@
 
 void ash_general()
 {
+	// Flag set to 1 when the process is called with an &
 	int is_background = 0;
+
+	// Check if an & has been passed as an argument
 	for(int i = 0; i<strlen(read_in); i++)
 	{
 		if(read_in[i] == '&')
@@ -19,9 +22,12 @@ void ash_general()
 			is_background = 1;
 		}
 	}
+
+	// Remove whitespace and extract the command
 	clean_string(read_in);
 	get_command();
 
+	// If & is specified, and the process pool is full display an error message
 	if(is_background && num_children == POOL_SIZE)
 	{
 		write(2, "ash: Background process pool is full", strlen("ash: Background process pool is full"));
@@ -29,8 +35,10 @@ void ash_general()
 		return;
 	}
 
+	// Create a child process
 	int pid = fork();
 
+	// In case fork fails
 	if(pid < 0)
 	{
 		write(2, "ash: New process creation failed", strlen("ash: New process creation failed"));
@@ -38,8 +46,10 @@ void ash_general()
 		return;
 	}
 
+	// If this is the child process
 	else if(pid == 0)
 	{
+		// Tokenize the command
 		int num_tok = 1;
 		for(int i = 0; i<strlen(read_in); i++)
 			if(read_in[i] == ' ')
@@ -61,9 +71,11 @@ void ash_general()
 		}
 		args[point][pos] = '\0';
 
+		// If it's a background process change the group to ensure that it doesn't take over stdin
 		if(is_background)
 			setpgid(0, 0);
 
+		// Execute the command
 		if(execvp(args[0], args) < 0)
 		{
 			write(2, "ash: Command not found", strlen("ash: Command not found"));
@@ -73,14 +85,17 @@ void ash_general()
 		exit(0);
 	}
 
+	// Parent process
 	else
-	{
+	{	
+		// If background, add to pool and exit
 		if(is_background)
 		{
 			push_child(pid);
 			usleep(100000);
 			return;
 		}
+		// If not background wait for the process to terminate
 		waitpid(pid, NULL, 0);
 	}
 }

@@ -14,12 +14,14 @@
 
 int main()
 {
+	// All the intializer functions are called to set up. These functions are called only once
 	install_signal(SIGCHLD, child_handler);
 	initialize_disp();
 	get_home();
 	clear_disp();
 	init_child_proc();
 	
+	// Setting up the global integer variables
 	uflag = 0;
 	num_children = 0;
 	

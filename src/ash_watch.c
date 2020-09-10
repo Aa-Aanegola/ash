@@ -10,15 +10,19 @@
 
 void ash_watch()
 {
+	// Default wait time
 	int pause = 5;
+	// Interrupt/Newborn/Invalid - default is invalid
 	int flag = -1;
 	
+	// String variables that are used for parsing the command
 	char *token;
 	char *dup_in = (char*)malloc(MAX_COMM*sizeof(char));
 	strcpy(dup_in, read_in);
 
 	token = strtok(dup_in, " ");
 
+	// Parsing the input to get the necessary flags using strtok
 	while(token != NULL)
 	{
 		token = strtok(0, " ");
@@ -44,9 +48,11 @@ void ash_watch()
 		}
 	}
 
-	if(pause == 0)
+	// Default value for rest is 1 second
+	if(pause <= 0)
 		pause = 1;
 
+	// Error message
 	if(flag == -1)
 	{
 		write(2, "ash: nightswatch: Invalid option", strlen("ash: nightswatch: Invalid option"));
@@ -54,8 +60,10 @@ void ash_watch()
 		return;
 	}
 
+	// Tracking interrupts
 	if(flag == 0)
 	{
+		// Using a child process to display the interrupt count, and parent to track for exit command
 		int pid = fork();
 
 		if(pid < 0)
@@ -118,8 +126,10 @@ void ash_watch()
 		}
 	}
 
+	// Tracking new process creation
 	else if(flag == 1)
 	{
+		// Using child process to track /proc/loadavg and parent to check for exit command
 		int pid = fork();
 
 		if(pid < 0)

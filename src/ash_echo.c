@@ -8,6 +8,7 @@
 #include"../include/Functions.h"
 #endif
 
+// Implementation of echo
 void ash_echo()
 {
 	char *buff;
@@ -17,6 +18,7 @@ void ash_echo()
 		buff[pos++] = read_in[i];
 	buff[pos] = '\0';
 
+	// Remove whitespace and dump onto stdout
 	clean_string(buff);
 	disp(buff);
 	newl();

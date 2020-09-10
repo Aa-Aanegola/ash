@@ -8,13 +8,17 @@
 #include"../include/Functions.h"
 #endif
 
+// A function to convert month number to a 3 character code
 void disp_month(char *month);
 
 void ash_ls()
 {
+	// Flags for invalid, -l and -a
 	int flag[3] = {0, 0, 0};
+	// Sizes of the columns for -l 
 	int size[5];
 
+	// Variables that are required for formatting and reading
 	char fname[MAX_COMM];
 	char temp[MIN_COMM];
 
@@ -22,6 +26,7 @@ void ash_ls()
 	char *dup_in = (char*)malloc(MAX_COMM*sizeof(char));
 	strcpy(dup_in, read_in);
 
+	// Parsing the input and extracting flags
 	token = strtok(dup_in, " ");
 
 	while(token != NULL)
@@ -45,14 +50,18 @@ void ash_ls()
 		}
 	}
 
+	// If a random flag is entered 
 	if(flag[2])
 	{
 		write(2, "ash: ls: Invalid option", sizeof("ash: ls: Invalid option"));
 		newl();
 		return;
 	}
+
+	// Maintains count of the number of specified directories
 	int dir_count = 0;
 
+	// Count directories and check if they're valid
 	strcpy(dup_in, read_in);
 	token = strtok(dup_in, " ");
 	while(token != NULL)
@@ -82,6 +91,7 @@ void ash_ls()
 		}
 	}
 
+	// If no directory was mentioned, append a . to to the command
 	if(dir_count == 0)
 		sprintf(read_in, "%s .", read_in);
 
@@ -105,6 +115,7 @@ void ash_ls()
 		dir = opendir(target);
 		struct dirent *entry;
 
+		// First iteration over the directory is for the total size and formatting of the output
 		if(dir)
 		{	
 			long long total = 0;
@@ -160,6 +171,7 @@ void ash_ls()
 			if(flag[0])
 				disp(temp);
 
+			// Second iteration is to display the formatted data
 			while((entry = readdir(dir)) != NULL)
 			{
 				if(!flag[1] && entry->d_name[0] == '.')

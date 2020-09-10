@@ -57,29 +57,34 @@ void update_disp()
 
 	getcwd(cur_dir, sizeof(cur_dir));
 	
+	// If the current directory is not a subdirectory of the home directory, then display as is
 	if(strlen(cur_dir) < strlen(home_dir))
 	{
 		sprintf(display_name,"<%s@%s:%s> ", passwd->pw_name, hname, cur_dir);
 		return;
 	}
 
+	// If the current directory is the home directory display ~
 	if(!strcmp(cur_dir, home_dir))
 	{
 		sprintf(display_name, "<%s@%s:~> ", passwd->pw_name, hname);
 		return;
 	}
 
+	// Check if the current directory is a subdirectory of the homedirectory
 	int sub_home = 1;
 	for(int i = 0; i<strlen(home_dir); i++)
 		if(home_dir[i] != cur_dir[i])
 			sub_home = 0;
 	
+	// If it isn't then again just display the full path from root
 	if(!sub_home)
 	{
 		sprintf(display_name,"<%s@%s:%s> ", passwd->pw_name, hname, cur_dir);
 		return;
 	}
 
+	// If it is a subdirectory then prefix with ~/ and give relative path
 	char *dir;
 	dir = (char*)malloc(strlen(cur_dir+2));
 	dir[0] = '~';
@@ -174,18 +179,21 @@ void get_perm(char *file)
 // Gives the full path to the directory specified, ie changes ~ to home etc
 void check_dir()
 {
+	// Convert . to the current directory
 	if(!strcmp(spec_dir, "."))
 	{
 		getcwd(target, sizeof(target));
 		return;
 	}
 
+	// Convert ~ to the home directory
 	if(!strcmp(spec_dir, "~"))
 	{
 		strcpy(target, home_dir);
 		return;
 	}
 
+	// Convert .. to the parent directory
 	if(!strcmp(spec_dir, ".."))
 	{
 		getcwd(cur_dir, sizeof(cur_dir));
@@ -204,9 +212,11 @@ void check_dir()
 		return;
 	}
 
+	// Otherwise copy the directory specified to the target
 	strcpy(target, spec_dir);
 }
 
+// Initializes all the child process structures in the pool to NULL
 void init_child_proc()
 {
 	for(int i = 0; i<POOL_SIZE; i++)
@@ -216,7 +226,7 @@ void init_child_proc()
 	}
 }
 
-//
+// Given the PID, adds a new child process to the pool in the first free location
 void push_child(pid_t pid)
 {
 	for(int i = 0; i<POOL_SIZE; i++)
@@ -230,10 +240,12 @@ void push_child(pid_t pid)
 		}
 	}	
 	
+	// In case the pool is full 
 	write(2, "ash: general: Process insertion failed", strlen("ash: general: Process insertion failed"));
 	newl();
 }
 
+// This is used for the list functionality, displays the info of all background processes currently in the pool
 void back_list()
 {
 	char *buffer = (char*)malloc(MAX_COMM*sizeof(char));
@@ -294,6 +306,7 @@ void child_handler(int sig, siginfo_t* info, void* vp)
 	}
 }
 
+// Iterates through the process pool and issues a SIGKILL command to each of them. Prevents SIGHUP signal sending
 void child_kill()
 {
 	for(int i = 0; i<POOL_SIZE; i++)

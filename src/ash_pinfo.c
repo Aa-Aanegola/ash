@@ -10,12 +10,15 @@
 
 void ash_pinfo()
 {	
+	// Variables to store data about the process
 	pid_t pid;
 	char *temp = (char*)malloc(MIN_COMM*sizeof(char));			
 		
+	// In case no PID is mentioned
 	if(strlen(read_in) == 5)
 		pid = getpid();
 
+	// Otherwise extract the PID
 	else
 	{
 		int pos = 0;
@@ -25,6 +28,7 @@ void ash_pinfo()
 		sscanf(temp, "%d", &pid);
 	}
 	
+	// Check if it's a valid PID by opening the proc file
 	sprintf(temp, "/proc/%d", pid);
 	DIR *dir = opendir(temp);
 
@@ -39,6 +43,7 @@ void ash_pinfo()
 	closedir(dir);
 	free(temp);	
 
+	// To obtain executable we check the /proc/PID/exe file
 	char *path = (char*)malloc(200*sizeof(char));
 	sprintf(path, "/proc/%d/exe", pid);
 	char *executable = (char*)malloc(MIN_COMM*sizeof(char));
@@ -46,6 +51,7 @@ void ash_pinfo()
 		executable[i] = '\0';
 	readlink(path, executable, 200);
 
+	// Convert it to a relative path 
 	if(strlen(home_dir) < strlen(executable))
 	{
 		int sub_home = 1;
@@ -64,6 +70,7 @@ void ash_pinfo()
 		}
 	}
 
+	// Now read from the stat file to obtain status and memory
 	sprintf(path, "/proc/%d/stat", pid);
 	FILE *fp = fopen(path, "r");
 

@@ -10,6 +10,7 @@
 
 void ash_history_read()
 {
+	// Counts number of arguments passed, and displays error message if required
 	int space = 0;
 	for(int i = 0; i<strlen(read_in); i++)
 		if(read_in[i] == ' ')
@@ -21,6 +22,7 @@ void ash_history_read()
 		return;
 	}
 
+	// Opens the executable path of the current process. This is to ensure that history is always stored in the include directory of the shell
 	char *path = (char*)malloc(MIN_COMM*sizeof(char));
 	sprintf(path, "/proc/%d/exe", getpid());
 	char *executable = (char*)malloc(MIN_COMM*sizeof(char));
@@ -38,11 +40,14 @@ void ash_history_read()
 
 	strcat(executable, "/include/history");
 
+	// Opening the file to read from, r truncated data and hence a+ was used instead
 	FILE *read_file = fopen(executable, "a+");
 	char *buffer = (char*)malloc(MIN_COMM*sizeof(char));
 
+	// Default value for number of commands to display
 	int c = 10;
 	
+	// If an argument is passed, extract it into c or display error message
 	if(space)
 	{
 		char *dup_in = (char*)malloc(MAX_COMM*sizeof(char));
@@ -62,7 +67,7 @@ void ash_history_read()
 		}
 	}
 
-
+	// Reading from the file, and displaying c commands
 	while(fgets(buffer, MAX_COMM, read_file)!=NULL && c)
 	{
 		if(!strcmp(buffer, "\n"))
@@ -79,6 +84,7 @@ void ash_history_read()
 
 void ash_history_write()
 {
+	// Extracting current processes executable path to ensure that history remains in the include directory of the shell
 	char *path = (char*)malloc(MIN_COMM*sizeof(char));
 	sprintf(path, "/proc/%d/exe", getpid());
 	char *read_executable = (char*)malloc(MIN_COMM*sizeof(char));
@@ -105,14 +111,16 @@ void ash_history_write()
 
 	strcat(write_executable, "/include/temp");
 
-
+	// Create a temporary file into which we write
 	FILE *write_file = fopen(write_executable, "w");
 	char *buffer = (char*)malloc(MAX_COMM*sizeof(char));
 
+	// Write the latest command
 	int c = 1;
 	fputs(read_in, write_file);
 	fputs("\n", write_file);
 
+	// Copy last 19 commands from the old file 
 	while(fgets(buffer,  MAX_COMM, read_file)!=NULL && c<HIST_SIZE)
 	{
 		if(!strcmp(buffer, "\n"))
@@ -126,6 +134,7 @@ void ash_history_write()
 	fclose(read_file);
 	fclose(write_file);
 
+	// Rename the new file
 	remove(read_executable);
 	rename(write_executable, read_executable);
 

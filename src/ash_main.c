@@ -16,9 +16,11 @@ void ash_main()
 	int pos = 0, bre = 0;
 	while(1)
 	{
+		// If all commands have been executed
 		if(bre)
 			break;
 
+		// To parse by semicolon
 		int i = 0;
 		while(buffer_command[pos] == ';')
 			pos++;
@@ -32,6 +34,7 @@ void ash_main()
 		if(pos >= strlen(buffer_command))
 			bre = 1;
 
+		// After obtaining the instruction, remove whitespace and execute if it's not NULL
 		read_in[i] = '\0';
 		clean_string(read_in);
 		if(!strlen(read_in))
@@ -41,13 +44,15 @@ void ash_main()
 		
 		ash_history_write();
 
+		// If the command issued is to exit the shell
 		if(!strcmp(command_word, "q") || !strcmp(command_word, "quit") || !strcmp(command_word, "exit"))
 		{
 			uflag = 1;
 			return;
 		}
 
-		if(!strcmp(command_word, "clear"))
+		// Simple if else ladder to execute commands
+		if(!strcmp(command_word, "clear") || !strcmp(command_word, "c"))
 			clear_disp();
 		else if(!strcmp(command_word, "echo"))
 			ash_echo();
