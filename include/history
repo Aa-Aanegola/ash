@@ -1,7 +1,29 @@
 q
 clear
 
-nightswatch -n 2 newborn
+ps -a
+
+list
+
+clear
+
+kill -9 14467
+
+list
+
+clear
+
+list
+
+vim &
+
+clear
+
+nightswatch interrupt
+
+q
+
+pinfo
 
 q
 
@@ -9,31 +31,9 @@ clear
 
 ls -al
 
-cd /
+ls -a
 
 clear
-
-ls -al
 
 ls
-
-cd src
-
-clear
-
-nightswatch -n 1 newborn
-
-q
-
-clear
-
-clear
-
-claer
-
-nightswatch -n 1 newborn
-
-nightswatch -n 1 newborn
-
-nightswatch
 
