@@ -1,39 +1,39 @@
 q
-git commit -m "Commented all code in src"
+cd ../..
 
-git add *
+cd ../Assignment-2
+
+cd ~/src
+
+q
+
+cd ~/src
 
 q
 
 clear
 
-pinfo
+cd ~/src
+
+q
+
+cd ~/src
 
 q
 
 clear
 
-ls -all . .. / /home/aakash
+cd ../Assignment-1
+
+q
 
 clear
 
-ls -aaa-a-aa
+cd ~/src
 
-ls -aa
-
-ls -a
+q
 
 clear
 
-history 1111
-
-hisory echo
-
-clear
-
-history >
-
-clear
-
-nightswatch -n 1 newborn
+ps -a
 

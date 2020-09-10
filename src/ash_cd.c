@@ -29,10 +29,21 @@ void ash_cd()
 
 	// Extract directory name
 	int pos = 0;
-	for(int i = 3; i<strlen(read_in); i++)
-		spec_dir[pos++] = read_in[i];
-	spec_dir[pos] = '\0';
+	if(read_in[3] == '~')
+	{
+		strcpy(spec_dir, home_dir);
+		int pos = strlen(spec_dir);
+		for(int i = 4; i<strlen(read_in); i++)
+			spec_dir[pos++] = read_in[i];
+		spec_dir[pos] = '\0';	
+	}
 
+	else
+	{
+		for(int i = 3; i<strlen(read_in); i++)
+			spec_dir[pos++] = read_in[i];
+		spec_dir[pos] = '\0';
+	}
 	check_dir();
 	
 	// Check if path specified exists using stat
