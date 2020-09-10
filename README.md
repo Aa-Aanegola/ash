@@ -27,7 +27,7 @@ Displays the prompt and takes input from the user using the take_inp function. C
 #### General_Functions.c 
 Has all the functions that serve as utility functions. The shell functions use all of these (setting directories, displaying, clearing screen etc).  
 #### ash_echo.c
-Basic implementation of echo, lacks quote and \ functionality.
+Basic implementation of echo, lacks quotation and escape sequence functionality.
 #### ash_cd.c
 Implementation of the BASH cd command. Changes directory to the specified directory.
 #### ash_pwd.c
@@ -39,9 +39,9 @@ Pinfo is a command added to ash. It displays the process information of the proc
 #### ash_general.c
 In case ash is requested to run a command through exec, this function is called. Forks a child process to run the desired command. Contains support for background processes using '&'. Use the command list to list all the current background processes.
 #### ash_history.c
-Contains implementation to read and write from the history file. the history command is run by entering history, or history <num> which displays <num> previous commands.
+Contains implementation to read and write from the history file. 
 #### ash_watch.c
-Contains implementation for the nightswatch command, run using nightswatch -n <num> interrupt. Newborn functionality is absent (tracking new process creation). The function keeps a track of number of keyboard interrupts per CPU.
+Contains implementation for the nightswatch command. The function keeps a track of number of keyboard interrupts per CPU or the PID of the most recently created process.
 ### extra
 #### Makefile
 Contains the series of instructions required to compile the code, and create the executable. Run the program using the make command.
