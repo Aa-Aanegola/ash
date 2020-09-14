@@ -11,7 +11,9 @@
 void ash_main()
 {
 	disp(display_name);
-		
+	
+	fflush(0);
+
 	take_inp();
 	int pos = 0, bre = 0;
 	while(1)
@@ -37,40 +39,12 @@ void ash_main()
 		// After obtaining the instruction, remove whitespace and execute if it's not NULL
 		read_in[i] = '\0';
 		clean_string(read_in);
+		
+		check_redir();
+
 		if(!strlen(read_in))
 			continue;
-		
-		get_command();
-		
-		ash_history_write();
 
-		// If the command issued is to exit the shell
-		if(!strcmp(command_word, "q") || !strcmp(command_word, "quit") || !strcmp(command_word, "exit"))
-		{
-			uflag = 1;
-			return;
-		}
-
-		// Simple if else ladder to execute commands
-		if(!strcmp(command_word, "clear") || !strcmp(command_word, "c"))
-			clear_disp();
-		else if(!strcmp(command_word, "echo"))
-			ash_echo();
-		else if(!strcmp(command_word, "pwd"))
-			ash_pwd();
-		else if(!strcmp(command_word, "cd"))
-			ash_cd();
-		else if(!strcmp(command_word, "ls"))
-			ash_ls();
-		else if(!strcmp(command_word, "pinfo"))
-			ash_pinfo();
-		else if(!strcmp(command_word, "history"))
-			ash_history_read();
-		else if(!strcmp(command_word, "nightswatch"))
-			ash_watch();
-		else if(!strcmp(command_word, "list"))
-			back_list();
-		else
-			ash_general();
+		exec_builtin();
 	}
 }

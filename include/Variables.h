@@ -45,4 +45,10 @@ child_proc proc_array[POOL_SIZE];
 
 // Number of children currently in the pool
 int num_children;
+
+// Holds the stdin code
+int master_in;
+
+// Holds the stdout code
+int master_out;
 #endif

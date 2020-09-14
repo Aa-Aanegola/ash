@@ -1,39 +1,39 @@
 q
-cd ../..
-
-cd ../Assignment-2
-
-cd ~/src
-
-q
-
-cd ~/src
-
 q
 
 clear
 
-cd ~/src
-
-q
-
-cd ~/src
-
-q
-
 clear
 
-cd ../Assignment-1
+cat a
 
-q
+cat a
 
-clear
+wc -l
 
-cd ~/src
-
-q
-
-clear
+pinfo
 
 ps -a
+
+clear
+
+clear
+
+ls
+
+ls
+
+cat a
+
+cat a
+
+clear
+
+clear
+
+q
+
+q
+
+clear
 

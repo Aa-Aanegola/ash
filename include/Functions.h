@@ -87,4 +87,10 @@ void back_list();
 
 // Kills all children before exiting the program
 void child_kill();
+
+// Checks if the user inputted < > or >>
+void check_redir();
+
+// Maps the commands to functions
+void exec_builtin();
 #endif

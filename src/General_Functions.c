@@ -315,3 +315,39 @@ void child_kill()
 			kill(proc_array[i].pid, SIGKILL);
 	}
 }
+
+
+void exec_builtin()
+{
+	clean_string(read_in);
+	get_command();
+	
+	ash_history_write();
+
+
+	// If the command issued is to exit the shell
+	if(!strcmp(command_word, "q") || !strcmp(command_word, "quit") || !strcmp(command_word, "exit"))
+	{
+		uflag = 1;
+		return;
+	}
+	// Simple if else ladder to execute commands
+	else if(!strcmp(command_word, "echo"))
+		ash_echo();
+	else if(!strcmp(command_word, "pwd"))
+		ash_pwd();
+	else if(!strcmp(command_word, "cd"))
+		ash_cd();
+	else if(!strcmp(command_word, "ls"))
+		ash_ls();
+	else if(!strcmp(command_word, "pinfo"))
+		ash_pinfo();
+	else if(!strcmp(command_word, "history"))
+		ash_history_read();
+	else if(!strcmp(command_word, "nightswatch"))
+		ash_watch();
+	else if(!strcmp(command_word, "list"))
+		back_list();
+	else
+		ash_general();
+}
