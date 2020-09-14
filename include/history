@@ -1,39 +1,39 @@
 q
-q
+clear
+
+jobs
+
+kjob 1 9
+
+jobs
+
+kjob 1 2
+
+jobs
+
+kjob 1 1
+
+jobs
 
 clear
 
-clear
+jobs
 
-ls
+kjob 2 11
 
-ls
+kill 2 11
 
-rm a b
-
-rm a b
-
-cat b
-
-cat b
-
-wc -w
-
-wc -w < a >> b
+jobs
 
 clear
 
-clear
+jobs
 
-wc -w
+gedit &
 
-wc -w < a
-
-clear
+vim &
 
 clear
 
-cat a
-
-cat a
+jobs
 

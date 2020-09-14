@@ -223,6 +223,7 @@ void init_child_proc()
 	{
 		proc_array[i].pid = -1;
 		proc_array[i].name[0] = '\0';
+		proc_array[i].pos = INF;
 	}
 }
 
@@ -235,7 +236,7 @@ void push_child(pid_t pid)
 		{
 			proc_array[i].pid = pid;
 			strcpy(proc_array[i].name, command_word);
-			num_children++;
+			proc_array[i].pos = num_children++;
 			return;
 		}
 	}	
@@ -245,20 +246,76 @@ void push_child(pid_t pid)
 	newl();
 }
 
+void sort_child()
+{
+	for(int i = 0; i<POOL_SIZE; i++)
+	{
+		for(int j = 0; j<POOL_SIZE-1-i; j++)
+		{
+			if(proc_array[j].pos > proc_array[j+1].pos)
+			{
+				child_proc temp;
+				temp.pid = proc_array[j].pid;
+				strcpy(temp.name, proc_array[j].name);
+				temp.pos = proc_array[j].pos;
+
+				proc_array[j].pid = proc_array[j+1].pid;
+				strcpy(proc_array[j].name, proc_array[j+1].name);
+				proc_array[j].pos = proc_array[j+1].pos;
+
+
+				proc_array[j+1].pid = temp.pid;
+				strcpy(proc_array[j+1].name, temp.name);
+				proc_array[j+1].pos = temp.pos;
+			}
+		}
+	}
+
+	for(int i = 0; i<POOL_SIZE; i++)
+		proc_array[i].pos = i;
+
+}
+
 // This is used for the list functionality, displays the info of all background processes currently in the pool
-void back_list()
+void ash_jobs()
 {
 	char *buffer = (char*)malloc(MAX_COMM*sizeof(char));
+	char *file_name = (char*)malloc(MIN_COMM*sizeof(char));
+
+	char stat;
+
+	sort_child();
+
 	for(int i = 0; i<POOL_SIZE; i++)
 	{
 		if(proc_array[i].pid != -1)
 		{
-			sprintf(buffer, "%d\t%s\n", proc_array[i].pid, proc_array[i].name);
-			disp(buffer);
+			sprintf(file_name, "/proc/%d/stat", proc_array[i].pid);
+			FILE *fp = fopen(file_name, "r");
+
+		
+			if(fp != NULL)
+			{
+				pid_t pid;
+				fscanf(fp, "%d", &pid);
+				fgetc(fp);
+				stat = fgetc(fp);
+				while(stat != ')')
+					stat = fgetc(fp);
+				while(stat  == ')')
+					stat = fgetc(fp);
+				fscanf(fp, "%c", &stat);
+
+				if(stat == 'T' || stat == 't')
+					sprintf(buffer, "[%d] Stopped", proc_array[i].pos+1);
+				else
+					sprintf(buffer, "[%d] Running", proc_array[i].pos+1);
+				sprintf(buffer, "%s %s [%d]\n", buffer, proc_array[i].name, proc_array[i].pid);
+				disp(buffer);
+			}
 		}
 	}
 }
-
 
 // Declaration of the sigaction handler, copied from an online resource
 handler* install_signal(int signum, handler* handler)
@@ -295,6 +352,8 @@ void child_handler(int sig, siginfo_t* info, void* vp)
 				sprintf(buffer, "\n%s with pid %d exited %s", proc_array[i].name, pid, WIFEXITED(status) == 0 ? "abnormally" : "normally");
 				write(1, buffer, strlen(buffer));
 				proc_array[i].pid = -1;
+				proc_array[i].pos = INF;
+				num_children--;
 				break;
 			}
 		}
@@ -321,9 +380,6 @@ void exec_builtin()
 {
 	clean_string(read_in);
 	get_command();
-	
-	ash_history_write();
-
 
 	// If the command issued is to exit the shell
 	if(!strcmp(command_word, "q") || !strcmp(command_word, "quit") || !strcmp(command_word, "exit"))
@@ -346,8 +402,16 @@ void exec_builtin()
 		ash_history_read();
 	else if(!strcmp(command_word, "nightswatch"))
 		ash_watch();
-	else if(!strcmp(command_word, "list"))
-		back_list();
+	else if(!strcmp(command_word, "jobs"))
+		ash_jobs();
+	else if(!strcmp(command_word, "kjob"))
+		ash_kjob();
+	else if(!strcmp(command_word, "overkill"))
+		child_kill();
+	else if(!strcmp(command_word, "setenv"))
+		env_set();
+	else if(!strcmp(command_word, "unsetenv"))
+		env_unset();
 	else
 		ash_general();
 }

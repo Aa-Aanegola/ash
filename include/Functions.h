@@ -83,7 +83,10 @@ void init_child_proc();
 void push_child(pid_t pid);
 
 // Lists all background processes
-void back_list();
+void ash_jobs();
+
+// Sends signal specified to job specified
+void ash_kjob();
 
 // Kills all children before exiting the program
 void child_kill();
@@ -93,4 +96,11 @@ void check_redir();
 
 // Maps the commands to functions
 void exec_builtin();
+
+// Sets environment variables
+void env_set();
+
+// Unsets environment variables
+void env_unset();
+
 #endif

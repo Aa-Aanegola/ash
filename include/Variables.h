@@ -51,4 +51,5 @@ int master_in;
 
 // Holds the stdout code
 int master_out;
+
 #endif

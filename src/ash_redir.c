@@ -168,6 +168,11 @@ void check_redir()
 		waitpid(pid, NULL, 0);
 		fflush(0);
 		read_in[0] = '\0';
+
+		free(dup_in);
+		free(read_file);
+		free(write_file);
+
 		return;
 	}
 }

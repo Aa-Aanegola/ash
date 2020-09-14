@@ -11,6 +11,8 @@ all:
 	gcc ./src/ash_history.c -c
 	gcc ./src/ash_watch.c -c
 	gcc ./src/ash_redir.c -c
+	gcc ./src/ash_env.c -c
+	gcc ./src/ash_kjob.c -c
 
 	gcc *.o -o ash
 	mkdir -p obj

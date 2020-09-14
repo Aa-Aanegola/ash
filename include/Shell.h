@@ -30,7 +30,7 @@ A list of all the header files that all my functions use and my structure for pr
 #define MIN_COMM 256
 #define POOL_SIZE 1024
 #define HIST_SIZE 20
-
+#define INF 1e9
 // Other definitions
 // For signal processing
 typedef void handler(int, siginfo_t *, void *);
@@ -40,6 +40,8 @@ typedef struct child_proc_st
 {
 	pid_t pid;
 	char name[MIN_COMM];
+	int pos;
 }child_proc;
+
 
 #endif
