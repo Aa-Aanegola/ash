@@ -32,6 +32,7 @@ void check_redir()
 				flag[3] = 1;
 				break;
 			}
+
 			flag[0] = 1;
 
 			token = strtok(0, " ");
@@ -41,6 +42,16 @@ void check_redir()
 				break;
 			}
 			strcpy(read_file, token);
+			int read_fd = open(read_file, O_RDONLY);
+			if(read_fd < 0)
+			{
+				write(2, "ash: redir: Input file not found", strlen("ash: redir: Input file not found"));
+				newl();
+				read_in[0] = '\0';
+				close(read_fd);
+				return;
+			}
+			close(read_fd);
 		}
 		else if(!strcmp(token, ">"))
 		{
@@ -112,13 +123,6 @@ void check_redir()
 		if(flag[0])
 		{
 			int read_fd = open(read_file, O_RDONLY);
-			if(read_fd < 0)
-			{
-				write(2, "ash: redir: Input file not found", strlen("ash: redir: Input file not found"));
-				newl();
-				read_in[0] = '\0';
-			}
-
 			dup2(read_fd, STDIN_FILENO);
 			close(read_fd);
 		}

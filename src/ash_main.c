@@ -39,6 +39,7 @@ void ash_main()
 		// After obtaining the instruction, remove whitespace and execute if it's not NULL
 		read_in[i] = '\0';
 		clean_string(read_in);
+		ash_history_write();
 		
 		check_redir();
 
