@@ -1,39 +1,39 @@
 q
 clear
 
-overkill
-
-gedit &
-
-vim &
-
-vim &
+ps -a > a | cat a | wc
 
 q
 
-jobs
+clear
 
-kjob 1 9
+ls -l
 
-jobs
+ls -l | head -3 | tail -1
 
-vim &
-
-jobs
-
-vim &
+q
 
 clear
 
-jobs
+ls | head -3 | tail -1
 
-kjob 1 9
+ls | head -3
 
-jobs
+ps -a > a | cat a | wc
 
-gedit &
+rm a
 
-jobs
+ls
 
-vim &
+rm wc
+
+cat wc
+
+ps -a > a | cat a > wc
+
+clear
+
+q
+
+clear
 

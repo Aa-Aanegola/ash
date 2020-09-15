@@ -41,11 +41,16 @@ void ash_main()
 		clean_string(read_in);
 		ash_history_write();
 		
-		check_redir();
+		ash_pipe();
 
 		if(!strlen(read_in))
 			continue;
 
+		ash_redir();
+
+		if(!strlen(read_in))
+			continue;
+		
 		exec_builtin();
 	}
 }

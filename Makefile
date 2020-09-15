@@ -13,6 +13,7 @@ all:
 	gcc ./src/ash_redir.c -c
 	gcc ./src/ash_env.c -c
 	gcc ./src/ash_kjob.c -c
+	gcc ./src/ash_pipe.c -c
 
 	gcc *.o -o ash
 	mkdir -p obj

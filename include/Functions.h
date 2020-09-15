@@ -92,7 +92,7 @@ void ash_kjob();
 void child_kill();
 
 // Checks if the user inputted < > or >>
-void check_redir();
+void ash_redir();
 
 // Maps the commands to functions
 void exec_builtin();
@@ -102,5 +102,8 @@ void env_set();
 
 // Unsets environment variables
 void env_unset();
+
+// Checks for pipes
+void ash_pipe();
 
 #endif

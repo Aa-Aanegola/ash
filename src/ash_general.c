@@ -80,9 +80,9 @@ void ash_general()
 		{
 			write(2, "ash: Command not found", strlen("ash: Command not found"));
 			newl();
-			exit(0);
+			exit(1);
 		}
-		exit(0);
+		exit(1);
 	}
 
 	// Parent process

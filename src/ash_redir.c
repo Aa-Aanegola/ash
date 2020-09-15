@@ -9,7 +9,7 @@
 #endif
 
 // Iterates over the input string, and checks if < > or >> are given
-void check_redir()
+void ash_redir()
 {
 	// 4 flags for < > >> and error
 	int flag[4] = {0, 0, 0, 0};
@@ -73,7 +73,7 @@ void check_redir()
 				break;
 			}
 			strcpy(write_file, token);
-			int write_fd = open(write_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			int write_fd = open(write_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			close(write_fd);
 		}
 		if(flag[1] && flag[2])
