@@ -27,11 +27,6 @@ void check_redir()
 	{
 		if(!strcmp(token, "<"))
 		{
-			if(flag[0])
-			{
-				flag[3] = 1;
-				break;
-			}
 
 			flag[0] = 1;
 
@@ -55,11 +50,6 @@ void check_redir()
 		}
 		else if(!strcmp(token, ">"))
 		{
-			if(flag[1])
-			{
-				flag[3] = 1;
-				break;
-			}
 			flag[1] = 1;
 
 			token = strtok(0, " ");
@@ -69,14 +59,11 @@ void check_redir()
 				break;
 			}
 			strcpy(write_file, token);
+			int write_fd = open(write_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			close(write_fd);
 		}
 		else if(!strcmp(token, ">>"))
 		{
-			if(flag[2])
-			{
-				flag[3] = 1;
-				break;
-			}
 			flag[2] = 1;
 
 			token = strtok(0, " ");
@@ -86,6 +73,8 @@ void check_redir()
 				break;
 			}
 			strcpy(write_file, token);
+			int write_fd = open(write_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			close(write_fd);
 		}
 		if(flag[1] && flag[2])
 		{
@@ -93,7 +82,10 @@ void check_redir()
 			break;
 		}
 
-		if(flag[3])
+		token = strtok(0, " ");
+	}
+
+	if(flag[3])
 		{
 			write(2, "ash: redir: Error in redirection", strlen("ash: redir: Error in redirection"));
 			newl();
@@ -101,8 +93,6 @@ void check_redir()
 			return;
 		}
 
-		token = strtok(0, " ");
-	}
 
 	// If no redirection, go back to normal execution
 	if(!flag[0] && !flag[1] && !flag[2])

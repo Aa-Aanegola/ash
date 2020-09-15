@@ -1,39 +1,39 @@
 q
 clear
 
+overkill
+
+gedit &
+
+vim &
+
+vim &
+
+q
+
 jobs
 
 kjob 1 9
 
 jobs
 
-kjob 1 2
+vim &
 
 jobs
-
-kjob 1 1
-
-jobs
-
-clear
-
-jobs
-
-kjob 2 11
-
-kill 2 11
-
-jobs
-
-clear
-
-jobs
-
-gedit &
 
 vim &
 
 clear
 
 jobs
+
+kjob 1 9
+
+jobs
+
+gedit &
+
+jobs
+
+vim &
 
