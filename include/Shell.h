@@ -28,7 +28,7 @@ A list of all the header files that all my functions use and my structure for pr
 // Constraints
 #define MAX_COMM 1024
 #define MIN_COMM 256
-#define POOL_SIZE 1024
+#define POOL_SIZE 3
 #define HIST_SIZE 20
 #define INF 1e9
 // Other definitions

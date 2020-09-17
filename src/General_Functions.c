@@ -216,165 +216,6 @@ void check_dir()
 	strcpy(target, spec_dir);
 }
 
-// Initializes all the child process structures in the pool to NULL
-void init_child_proc()
-{
-	for(int i = 0; i<POOL_SIZE; i++)
-	{
-		proc_array[i].pid = -1;
-		proc_array[i].name[0] = '\0';
-		proc_array[i].pos = INF;
-	}
-}
-
-// Given the PID, adds a new child process to the pool in the first free location
-void push_child(pid_t pid)
-{
-	for(int i = 0; i<POOL_SIZE; i++)
-	{
-		if(proc_array[i].pid == -1)
-		{
-			proc_array[i].pid = pid;
-			strcpy(proc_array[i].name, command_word);
-			proc_array[i].pos = num_children++;
-			return;
-		}
-	}	
-	
-	// In case the pool is full 
-	write(2, "ash: general: Process insertion failed", strlen("ash: general: Process insertion failed"));
-	newl();
-}
-
-void sort_child()
-{
-	for(int i = 0; i<POOL_SIZE; i++)
-	{
-		for(int j = 0; j<POOL_SIZE-1-i; j++)
-		{
-			if(proc_array[j].pos > proc_array[j+1].pos)
-			{
-				child_proc temp;
-				temp.pid = proc_array[j].pid;
-				strcpy(temp.name, proc_array[j].name);
-				temp.pos = proc_array[j].pos;
-
-				proc_array[j].pid = proc_array[j+1].pid;
-				strcpy(proc_array[j].name, proc_array[j+1].name);
-				proc_array[j].pos = proc_array[j+1].pos;
-
-
-				proc_array[j+1].pid = temp.pid;
-				strcpy(proc_array[j+1].name, temp.name);
-				proc_array[j+1].pos = temp.pos;
-			}
-		}
-	}
-
-	for(int i = 0; i<POOL_SIZE; i++)
-		proc_array[i].pos = i;
-
-}
-
-// This is used for the list functionality, displays the info of all background processes currently in the pool
-void ash_jobs()
-{
-	char *buffer = (char*)malloc(MAX_COMM*sizeof(char));
-	char *file_name = (char*)malloc(MIN_COMM*sizeof(char));
-
-	char stat;
-
-	sort_child();
-
-	for(int i = 0; i<POOL_SIZE; i++)
-	{
-		if(proc_array[i].pid != -1)
-		{
-			sprintf(file_name, "/proc/%d/stat", proc_array[i].pid);
-			FILE *fp = fopen(file_name, "r");
-
-		
-			if(fp != NULL)
-			{
-				pid_t pid;
-				fscanf(fp, "%d", &pid);
-				fgetc(fp);
-				stat = fgetc(fp);
-				while(stat != ')')
-					stat = fgetc(fp);
-				while(stat  == ')')
-					stat = fgetc(fp);
-				fscanf(fp, "%c", &stat);
-
-				if(stat == 'T' || stat == 't')
-					sprintf(buffer, "[%d] Stopped", proc_array[i].pos+1);
-				else
-					sprintf(buffer, "[%d] Running", proc_array[i].pos+1);
-				sprintf(buffer, "%s %s [%d]\n", buffer, proc_array[i].name, proc_array[i].pid);
-				disp(buffer);
-			}
-		}
-	}
-}
-
-// Declaration of the sigaction handler, copied from an online resource
-handler* install_signal(int signum, handler* handler)
-{
-	struct sigaction new_action, old_action;
-	
-	memset(&new_action, 0, sizeof(struct sigaction));
-	new_action.sa_sigaction = handler;
-	sigemptyset(&new_action.sa_mask);
-	
-	new_action.sa_flags = SA_RESTART|SA_SIGINFO;
-
-	if (sigaction(signum, &new_action, &old_action) < 0)
-		write(2, "ash: signal encountered an error", strlen("ash: signal encountered an error"));                                                         
-    return (old_action.sa_sigaction);                                           
-}
-
-
-// The function that is called whenever a SIGCHLD signal is received. This was done to ensure that child exit handling is asynchronous
-void child_handler(int sig, siginfo_t* info, void* vp)
-{
-	int status;
-	int pid;
-	char buffer[MAX_COMM];
-
-	int term = 0;
-	while((pid = waitpid(-1, &status, WNOHANG)) > 0)
-	{
-		for(int i = 0; i<POOL_SIZE; i++)
-		{
-			if(proc_array[i].pid == pid)
-			{
-				term = 1;
-				sprintf(buffer, "\n%s with pid %d exited %s", proc_array[i].name, pid, WIFEXITED(status) == 0 ? "abnormally" : "normally");
-				write(1, buffer, strlen(buffer));
-				proc_array[i].pid = -1;
-				proc_array[i].pos = INF;
-				num_children--;
-				break;
-			}
-		}
-	}
-	if(term)
-	{
-		newl();
-		disp(display_name);
-	}
-}
-
-// Iterates through the process pool and issues a SIGKILL command to each of them. Prevents SIGHUP signal sending
-void child_kill()
-{
-	for(int i = 0; i<POOL_SIZE; i++)
-	{
-		if(proc_array[i].pid != -1)
-			kill(proc_array[i].pid, SIGKILL);
-	}
-}
-
 
 void exec_builtin()
 {
@@ -412,6 +253,10 @@ void exec_builtin()
 		env_set();
 	else if(!strcmp(command_word, "unsetenv"))
 		env_unset();
+	else if(!strcmp(command_word, "bg"))
+		ash_bg();
+	else if(!strcmp(command_word, "fg"))
+		ash_fg();
 	else
 		ash_general();
 }

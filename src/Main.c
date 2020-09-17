@@ -14,8 +14,13 @@
 
 int main()
 {
+	master_pid = getpid();
+	fore_proc.pid = -1;
+
 	// All the intializer functions are called to set up. These functions are called only once
 	install_signal(SIGCHLD, child_handler);
+	install_signal(SIGINT, c_handler);
+	install_signal(SIGTSTP, z_handler);
 	initialize_disp();
 	get_home();
 	clear_disp();

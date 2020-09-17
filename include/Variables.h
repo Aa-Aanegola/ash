@@ -52,4 +52,10 @@ int master_in;
 // Holds the stdout code
 int master_out;
 
+// Holds the pid of the root (parent)
+pid_t master_pid;
+
+// Holds the pid of the foreground process
+child_proc fore_proc;
+
 #endif

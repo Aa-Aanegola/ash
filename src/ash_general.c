@@ -96,6 +96,10 @@ void ash_general()
 			return;
 		}
 		// If not background wait for the process to terminate
-		waitpid(pid, NULL, 0);
+		
+		fore_proc.pid = pid;
+		strcpy(fore_proc.name, command_word);	
+		waitpid(pid, NULL, WUNTRACED);
+		fore_proc.pid = -1;
 	}
 }

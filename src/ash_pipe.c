@@ -80,7 +80,7 @@ void ash_pipe()
 			ash_redir();
 			if(strlen(read_in))
 				exec_builtin();
-			exit(2);
+			exit(0);
 		}
 		else
 		{

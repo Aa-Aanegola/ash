@@ -1,39 +1,39 @@
 q
 clear
 
-ps -a > a | cat a | wc
+fg 1
 
-q
-
-clear
-
-ls -l
-
-ls -l | head -3 | tail -1
-
-q
+gedit
 
 clear
 
-ls | head -3 | tail -1
+bg 1
 
-ls | head -3
+fg 1
 
-ps -a > a | cat a | wc
+fg 1
 
-rm a
+fg 1
 
-ls
+fg 1
 
-rm wc
+jobs
 
-cat wc
+vim
 
-ps -a > a | cat a > wc
+fg 1
+
+jobs
+
+gedit
 
 clear
 
 q
 
+make
+
 clear
+
+claer
 

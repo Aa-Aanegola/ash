@@ -22,6 +22,9 @@ void ash_main()
 		if(bre)
 			break;
 
+		if(!strlen(buffer_command))
+			return;
+
 		// To parse by semicolon
 		int i = 0;
 		while(buffer_command[pos] == ';')

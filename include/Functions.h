@@ -70,6 +70,13 @@ handler* install_signal(int signum, handler* handler);
 // Specific child handler that takes care of SIGCHLD signal
 void child_handler(int sig, siginfo_t* info, void* vp);
 
+// Handles Ctrl+Z
+void z_handler(int sig, siginfo_t* info, void* vp);
+
+// Handles Ctrl+C
+void c_handler(int sig, siginfo_t* info, void* vp);
+
+
 // Reads from history, implementation of history command
 void ash_history_read();
 
@@ -81,6 +88,9 @@ void init_child_proc();
 
 // Pushed a child process (if background) into the child pool
 void push_child(pid_t pid);
+
+// Sorts all children
+void sort_child();
 
 // Lists all background processes
 void ash_jobs();
@@ -106,4 +116,9 @@ void env_unset();
 // Checks for pipes
 void ash_pipe();
 
+// Sends a process to the background
+void ash_bg();
+
+// Brings a process to the foreground
+void ash_fg();
 #endif

@@ -12,8 +12,12 @@ all:
 	gcc ./src/ash_watch.c -c
 	gcc ./src/ash_redir.c -c
 	gcc ./src/ash_env.c -c
+	gcc ./src/ash_jobs.c -c
 	gcc ./src/ash_kjob.c -c
 	gcc ./src/ash_pipe.c -c
+	gcc ./src/ash_bg.c -c
+	gcc ./src/ash_fg.c -c
+	gcc ./src/ash_signals.c -c
 
 	gcc *.o -o ash
 	mkdir -p obj

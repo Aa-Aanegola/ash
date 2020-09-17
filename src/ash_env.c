@@ -76,14 +76,12 @@ void env_unset()
 	token = strtok(NULL, " ");
 	if(token == NULL)
 	{
-		disp(variable);
 		int a;
 		if((a = unsetenv(variable)) < 0)
 		{
 			write(2, "ash: unsetenv: Variable failed to unset", strlen("ash: unsetenv: Variable failed to unset"));
 			newl();
 		}
-		printf("%d", a);
 		return;
 	}
 
