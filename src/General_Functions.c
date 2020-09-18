@@ -36,6 +36,10 @@ void newl()
 	write(1, "\n", 1);
 }
 
+void newlerr()
+{
+	write(2, "\n", 1);
+}
 
 // Initializes the shell prompt with the username and hostname
 void initialize_disp()
@@ -57,17 +61,25 @@ void update_disp()
 
 	getcwd(cur_dir, sizeof(cur_dir));
 	
+
+	if(suc_flag)
+		strcpy(display_name, ":(");
+	else
+		strcpy(display_name, ":)");
+	
+	suc_flag = 0;
+
 	// If the current directory is not a subdirectory of the home directory, then display as is
 	if(strlen(cur_dir) < strlen(home_dir))
 	{
-		sprintf(display_name,"<%s@%s:%s> ", passwd->pw_name, hname, cur_dir);
+		sprintf(display_name,"%s <%s@%s:%s> ", display_name, passwd->pw_name, hname, cur_dir);
 		return;
 	}
 
 	// If the current directory is the home directory display ~
 	if(!strcmp(cur_dir, home_dir))
 	{
-		sprintf(display_name, "<%s@%s:~> ", passwd->pw_name, hname);
+		sprintf(display_name, "%s <%s@%s:~> ", display_name, passwd->pw_name, hname);
 		return;
 	}
 
@@ -80,7 +92,7 @@ void update_disp()
 	// If it isn't then again just display the full path from root
 	if(!sub_home)
 	{
-		sprintf(display_name,"<%s@%s:%s> ", passwd->pw_name, hname, cur_dir);
+		sprintf(display_name,"%s <%s@%s:%s> ", display_name, passwd->pw_name, hname, cur_dir);
 		return;
 	}
 
@@ -94,7 +106,8 @@ void update_disp()
 		dir[pos++] = cur_dir[i];
 	dir[pos] = '\0';
 
-	sprintf(display_name,"<%s@%s:%s> ", passwd->pw_name, hname, dir);
+	sprintf(display_name,"%s <%s@%s:%s> ", display_name, passwd->pw_name, hname, dir);
+
 
 	free(dir);	
 }
@@ -137,6 +150,7 @@ void get_command()
 void get_home()
 {
 	getcwd(home_dir, sizeof(home_dir));
+	getcwd(prev_dir, sizeof(prev_dir));
 }
 
 
@@ -212,12 +226,18 @@ void check_dir()
 		return;
 	}
 
+	if(!strcmp(spec_dir, "-"))
+	{
+		strcpy(target, prev_dir);
+		return;
+	}
+
 	// Otherwise copy the directory specified to the target
 	strcpy(target, spec_dir);
 }
 
 
-void exec_builtin()
+void ash_builtin()
 {
 	clean_string(read_in);
 	get_command();

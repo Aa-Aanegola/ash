@@ -13,9 +13,11 @@ void clear_disp();
 // Takes the string passed as argument and dumps it onto stdout
 void disp(char *str);
 
-// Displays a newline
+// Displays a newline in stdout
 void newl();
 
+// Displays a newline in stderr
+void newlerr();
 // Reads user input into buffer_command
 void take_inp();
 
@@ -105,7 +107,7 @@ void child_kill();
 void ash_redir();
 
 // Maps the commands to functions
-void exec_builtin();
+void ash_builtin();
 
 // Sets environment variables
 void env_set();
@@ -121,4 +123,7 @@ void ash_bg();
 
 // Brings a process to the foreground
 void ash_fg();
+
+// Chaining commands
+void ash_chain();
 #endif

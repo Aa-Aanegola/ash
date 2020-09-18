@@ -20,7 +20,10 @@ handler* install_signal(int signum, handler* handler)
 	new_action.sa_flags = SA_RESTART|SA_SIGINFO;
 
 	if (sigaction(signum, &new_action, &old_action) < 0)
+	{
 		write(2, "ash: signal encountered an error", strlen("ash: signal encountered an error"));                                                         
+		newlerr();
+	}
     return (old_action.sa_sigaction);                                           
 }
 
@@ -56,70 +59,67 @@ void child_handler(int sig, siginfo_t* info, void* vp)
 	}
 }
 
-// Handles when you press ctrl+c
+// Handles when you press ctrl+c - discovered that return works well because all execvp functions are reset to default signal handlers
 void c_handler(int sig, siginfo_t* info, void* vp)
 {
-	pid_t pid = getpid();
+	/*pid_t pid = getpid();
 	if(pid != master_pid)
 		return;
 	if(fore_proc.pid == -1)
 		return;
 
-	setpgid(fore_proc.pid, 0);
 	if(kill(fore_proc.pid, SIGINT) < 0)
 	{
-		write(2, "ash : Could not send SIGTTIN to process", strlen("ash : Could not send SIGTTIN to process"));
+		write(2, "ash : Could not send SIGINT to process", strlen("ash : Could not send SIGINT to process"));
 		newl();
-		return;	
+		suc_flag = 1;
+		return;
 	}
 
 	for(int i = 0; i<POOL_SIZE; i++)
-	{
-		printf("PID: %d %d\n", proc_array[i].pid, fore_proc.pid);
 		if(fore_proc.pid == proc_array[i].pid)
 			proc_array[i].pid = -1;
-	}
 
 	fore_proc.pid = -1;
+
+	suc_flag = 1;*/
 }
 
-
+// Handles Ctrl+Z
 void z_handler(int sig, siginfo_t* info, void* vp)
 {
+	// Checks that Ctrl+Z was passed in terminal, and checks if a foreground process exists
 	pid_t pid = getpid();
 	if(pid != master_pid)
 		return;
 	if(fore_proc.pid == -1)
 		return;
 
-
+	// Checks if we can move the process to background 
 	if(num_children == POOL_SIZE)
 	{
 		write(2, "ash: Too many background processes", strlen("ash: Too many background processes"));
-		newl();
+		newlerr();
+		suc_flag = 1;
 		return;
 	}
 
-
+	// If we can simplt send a SIGTSTP signal to the foreground process
 	setpgid(fore_proc.pid, 0);
 	if(kill(fore_proc.pid, SIGTSTP) < 0)
 	{
-		write(2, "ash: Could not send SIGTTIN to process", strlen("ash : Could not send SIGTTIN to process"));
-		newl();
+		write(2, "ash: Could not send SIGTSTP to process", strlen("ash : Could not send SIGTSTP to process"));
+		newlerr();
+		suc_flag = 1;
 		return;	
 	}
 
-	/*if(kill(fore_proc.pid, SIGSTOP) < 0)
-	{
-		write(2, "ash : Could not send SIGTSTP to process", strlen("ash : Could not send SIGTSTP to process"));
-		newl();
-		return;
-	}*/
-
+	// Reset the input stream, and make sure that the SIGTTIN and SIGTTOU signals are set back to their default handlers
 	tcsetpgrp(STDIN_FILENO, master_pid);
 	signal(SIGTTIN, SIG_DFL);
 	signal(SIGTTOU, SIG_DFL);
 
+	// Put the foreground process into background
 	strcpy(command_word, fore_proc.name);
 	push_child(fore_proc.pid);
 }

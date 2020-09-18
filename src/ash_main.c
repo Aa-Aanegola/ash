@@ -10,6 +10,7 @@
 
 void ash_main()
 {
+	update_disp();
 	disp(display_name);
 	
 	fflush(0);
@@ -44,16 +45,25 @@ void ash_main()
 		clean_string(read_in);
 		ash_history_write();
 		
+		// In case we have chaining commands
+		ash_chain();
+
+		if(!strlen(read_in))
+			continue;
+	
+		// If not then check for pipes		
 		ash_pipe();
 
 		if(!strlen(read_in))
 			continue;
 
+		// If not then check for redirection
 		ash_redir();
 
 		if(!strlen(read_in))
 			continue;
 		
-		exec_builtin();
+		// If not then simply execute
+		ash_builtin();
 	}
 }

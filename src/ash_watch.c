@@ -56,7 +56,8 @@ void ash_watch()
 	if(flag == -1)
 	{
 		write(2, "ash: nightswatch: Invalid option", strlen("ash: nightswatch: Invalid option"));
-		newl();
+		newlerr();
+		suc_flag = 1;
 		return;
 	}
 
@@ -69,7 +70,8 @@ void ash_watch()
 		if(pid < 0)
 		{
 			write(2, "ash: nightswatch: Process failed", strlen("ash: nightswatch: Process failed"));
-			newl();
+			newlerr();
+			suc_flag = 1;
 			return;
 		}
 
@@ -114,6 +116,8 @@ void ash_watch()
 		else
 		{
 			char ch;
+			fore_proc.pid = pid;
+			strcpy(fore_proc.name, "nightswatch");
 			while(1)
 			{
 				ch = getchar();
@@ -123,6 +127,7 @@ void ash_watch()
 					return;
 				}
 			}
+			fore_proc.pid = -1;
 		}
 	}
 
@@ -135,7 +140,8 @@ void ash_watch()
 		if(pid < 0)
 		{
 			write(2, "ash: nightswatch: Process failed", strlen("ash: nightswatch: Process failed"));
-			newl();
+			newlerr();
+			suc_flag = 1;
 			return;
 		}
 
@@ -164,6 +170,8 @@ void ash_watch()
 		else
 		{
 			char ch;
+			fore_proc.pid = pid;
+			strcpy(fore_proc.name, "nightswatch");
 			while(1)
 			{
 				ch = getchar();
@@ -173,6 +181,7 @@ void ash_watch()
 					return;
 				}
 			}
+			fore_proc.pid = -1;
 		}	
 	}
 }

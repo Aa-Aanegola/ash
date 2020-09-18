@@ -1,4 +1,4 @@
-#ifndef SHELL_H
+	#ifndef SHELL_H
 #include"../include/Shell.h"
 #endif
 #ifndef VARIABLE_H
@@ -54,7 +54,8 @@ void ash_ls()
 	if(flag[2])
 	{
 		write(2, "ash: ls: Invalid option", sizeof("ash: ls: Invalid option"));
-		newl();
+		newlerr();
+		suc_flag = 1;
 		return;
 	}
 
@@ -70,7 +71,10 @@ void ash_ls()
 		if(token == NULL)
 			break;
 		if(token[0] == '-')
-			continue;
+		{
+			if(token[1] != '\0')
+				continue;
+		}
 
 		dir_count++;
 		strcpy(spec_dir, token);
@@ -86,7 +90,8 @@ void ash_ls()
 		else
 		{
 			write(2, "ash: ls: Specified directory isn't a directory/doesn't exist", strlen("ash: ls: Specified directory isn't a directory/doesn't exist"));
-			newl();
+			newlerr();
+			suc_flag = 1;
 			return;
 		}
 	}
@@ -103,7 +108,8 @@ void ash_ls()
 		if(token == NULL)
 			break;
 		if(token[0] == '-')
-			continue;
+			if(token[1] != '\0')
+				continue;
 
 		strcpy(spec_dir, token);
 		if(spec_dir[strlen(spec_dir)-1] == '\n')

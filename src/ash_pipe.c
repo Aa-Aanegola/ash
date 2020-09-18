@@ -10,20 +10,24 @@
 
 void ash_pipe()
 {
+	// Variables for tokenization
 	char *token;
 	char *dup_in = (char*)malloc(MAX_COMM*sizeof(char));
 	strcpy(dup_in, read_in);
 
+	// We extract tokens by space
 	token = strtok(dup_in, " ");
 	if(!strcmp(token, "|"))
 	{
 		write(2, "ash: pipe: Pipe cannot read from NULL command", strlen("ash: pipe: Pipe cannot read from NULL command"));
-		newl();
+		newlerr();
+		suc_flag = 1;
 		return;
 	}
 
 	int pipe_count = 0;
 
+	// Count the number of pipes
 	token = strtok(NULL, " ");
 	while(token != NULL)
 	{
@@ -34,7 +38,8 @@ void ash_pipe()
 			if(token == NULL)
 			{
 				write(2, "ash: pipe: Pipe cannot write to NULL command", strlen("ash: pipe: Pipe cannot write to NULL command"));
-				newl();
+				newlerr();
+				suc_flag = 1;
 				return;
 			}
 		}
@@ -42,6 +47,7 @@ void ash_pipe()
 		token = strtok(NULL, " ");
 	}
 
+	// If there's no piping, return to normal execution
 	if(!pipe_count)
 		return;
 
@@ -52,6 +58,9 @@ void ash_pipe()
 	int new_in = 0;
 	pid_t pid;
 
+	// For every | character, make a pipe. The first command reads from stdin, and the last command writes to stdout
+	// The rest of the commands read from the read end of the previous pipe, and write to the write end of their own pipe.
+	// Redirection takes precedence over pipes, emulating bash behavior. 
 	for(int i = 0; i<=pipe_count; i++)
 	{
 		int pipes[2];
@@ -63,12 +72,16 @@ void ash_pipe()
 
 		pid = fork();
 
+		// Error in forking
 		if(pid < 0)
 		{
 			write(2, "ash: Failed to spawn new process", strlen("ash: Failed to spawn new process"));
-			newl();
+			newlerr();
+			suc_flag = 1;
 			return;
 		}
+
+		// Child process runs the command, and creates the pipe
 		if(pid == 0)
 		{
 			dup2(new_in, 0);
@@ -79,9 +92,12 @@ void ash_pipe()
 			close(pipes[0]);
 			ash_redir();
 			if(strlen(read_in))
-				exec_builtin();
+				ash_builtin();
 			exit(0);
 		}
+
+		// Parent waits for termination of the child, and closes the unused write end of the pipe
+		// Also sets the read end of the pipe for the next command
 		else
 		{
 			waitpid(pid, NULL, 0);
@@ -90,5 +106,7 @@ void ash_pipe()
 		}
 	}
 
+	// Make the command null, and free the copied variable
 	read_in[0] = '\0';
+	free(dup_in);
 }

@@ -29,7 +29,8 @@ int main()
 	// Setting up the global integer variables
 	uflag = 0;
 	num_children = 0;
-	
+	suc_flag = 0;	
+
 	while(1)
 	{
 		ash_main();

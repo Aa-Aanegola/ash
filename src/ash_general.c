@@ -31,7 +31,8 @@ void ash_general()
 	if(is_background && num_children == POOL_SIZE)
 	{
 		write(2, "ash: Background process pool is full", strlen("ash: Background process pool is full"));
-		newl();
+		newlerr();
+		suc_flag = 1;
 		return;
 	}
 
@@ -42,7 +43,8 @@ void ash_general()
 	if(pid < 0)
 	{
 		write(2, "ash: New process creation failed", strlen("ash: New process creation failed"));
-		newl();
+		newlerr();
+		suc_flag = 1;
 		return;
 	}
 
@@ -79,7 +81,7 @@ void ash_general()
 		if(execvp(args[0], args) < 0)
 		{
 			write(2, "ash: Command not found", strlen("ash: Command not found"));
-			newl();
+			newlerr();
 			exit(1);
 		}
 		exit(1);

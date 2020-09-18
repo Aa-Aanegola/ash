@@ -35,9 +35,12 @@ void push_child(pid_t pid)
 	
 	// In case the pool is full 
 	write(2, "ash: general: Process insertion failed", strlen("ash: general: Process insertion failed"));
-	newl();
+	newlerr();
+	suc_flag = 1;
 }
-
+	
+// Sorts all processes by their job number
+// Also handles some dangling cases
 void sort_child()
 {
 	for(int i = 0; i<POOL_SIZE; i++)
@@ -72,7 +75,7 @@ void sort_child()
 		proc_array[i].pos = i;
 }
 
-// This is used for the list functionality, displays the info of all background processes currently in the pool
+// Lists all the running jobs sorted by job number
 void ash_jobs()
 {
 	char *buffer = (char*)malloc(MAX_COMM*sizeof(char));
@@ -124,6 +127,9 @@ void ash_jobs()
 			}
 		}
 	}
+
+	free(buffer);
+	free(file_name);
 }
 
 // Iterates through the process pool and issues a SIGKILL command to each of them. Prevents SIGHUP signal sending

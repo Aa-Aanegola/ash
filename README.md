@@ -8,7 +8,9 @@ Semicolon seperated commands provide the ability to run multiple commands concur
 Implementations of ls, cd, echo etc.  
 A new pinfo function that allows you to view basic information of any process.
 Background process functionality allows you to run any command in the background, and still use your shell.  
-A history function to keep a track of entered commands.  
+A history function to keep a track of entered commands.
+Support for piping and redirection.  
+Command chaining using logical and/or.   
 ## File Structure
 ### include
 #### Shell.h
@@ -42,6 +44,24 @@ In case ash is requested to run a command through exec, this function is called.
 Contains implementation to read and write from the history file. 
 #### ash_watch.c
 Contains implementation for the nightswatch command. The function keeps a track of number of keyboard interrupts per CPU or the PID of the most recently created process.
+#### ash_bg.c
+Contains implementation for the bg command. The function changes the state of the background process to running.
+#### ash_fg.c
+Contains implementation of the fg command. Brings process specified to the foreground.
+#### ash_chain.c
+Contains implementation for command chaining. Logical and is represented by ```@``` and or by ```$```
+#### ash_env.c
+Contains implementation for environment variable setting/unsetting.
+#### ash_jobs.
+Contains implementation for all the job related functions, including listing and killing jobs.
+#### ash_kjob.c
+Contains implementation of the kjob function, that sends the job specified the signal specified.
+#### ash_pipe.c
+Contains implementation of the pipe function. Sets up pipes between processes, and supports an infinite number of processes.
+#### ash_redir.c
+Contains implementation of redirection functions. Changes streams to those specified. 
+#### ash_signals.c
+Contains signal handlers and the base sigaction signal installer. Signal handlers are installed for SIGTSTP and SIGINT and SIGCHLD.
 ### extra
 #### Makefile
 Contains the series of instructions required to compile the code, and create the executable. Run the program using the make command.
@@ -69,9 +89,30 @@ Syntax : ```nightswatch -n <delay> <interrupt/newborn>```
 	Interrupt - Displays number of keyboard interrupts per CPU every delay seconds.
 	Newborn - Displays the PID of the last created process every delay seconds.
 	Minimum delay is 1 second, and default delay is 5 seconds.
-#### list
-Syntax : ```list```  
-	List displays a list of PID and names of the current background processes spawned by ash.
+#### jobs
+Syntax : ```jobs```  
+	Jobs displays a list of PID and names of the current background processes spawned by ash sorted by spawn order.
+#### kjob
+Syntax : ```kjob <jobno> <signo>```
+	Kjob sends the job specified the signal specified.
+#### setenv
+Syntax : ```setenv <var> <value>```
+	Setenv creates an environment variable var with value value(optional). If var already exists, the value is changed.
+#### unsetenv
+Syntax : ```unsetenv <var>```
+	Unsetenv deletes the environment variable with name var.
+#### fg 
+Syntax : ```fg <jobno>```
+	Brings the job specified to the foreground. 
+#### bg 
+Syntax : ```bg <jobno>```
+	Changes the state of the process specified to running.
+#### overkill
+Syntax : ```overkill```
+	Kills all the background processes.
+#### quit
+Syntax : ```quit```
+	Exits the shell.
 ## Assumptions
 Ash is designed to be used for normal day to day needs and hence certain reasonable assumptions were made on the length of directory, file and command names.  
 Since this shell has been created in an attempt to learn, error handling is not very robust and ash is not intended to be stress-tested.  

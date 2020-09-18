@@ -8,14 +8,17 @@
 #include"../include/Functions.h"
 #endif
 
+// Changes the state of the specified background process to running
 void ash_bg()
 {
+	// Variables for parsing
 	char *token;
 	char *dup_in = (char*)malloc(MAX_COMM*sizeof(char));
 	strcpy(dup_in, read_in);
 
 	int count = 0;
-		
+	
+	// Count number of parameters, and handle errors
 	token = strtok(dup_in, " ");
 	while(token != NULL)
 	{
@@ -26,7 +29,8 @@ void ash_bg()
 	if(count != 2)
 	{
 		write(2, "ash: bg: Only two arguments must be passed", strlen("ash: bg: Only two arguments must be passed"));
-		newl();
+		newlerr();
+		suc_flag = 1;
 		return;
 	}
 
@@ -36,15 +40,27 @@ void ash_bg()
 
 	int job_no = atoi(token) - 1;
 
+	// Iterate over job pool and find desired job number
 	for(int i = 0; i<POOL_SIZE; i++)
 	{
 		if(proc_array[i].pos == job_no)
 		{
-			kill(proc_array[i].pid, SIGCONT);
+			if(proc_array[i].pid == -1)
+				break;
+			
+			// If found then send process the SIGCONT signal
+			if(kill(proc_array[i].pid, SIGCONT) < 0)
+			{
+				write(2, "ash: Couldn't send signal to process", strlen("ash: Couldn't send signal to process"));
+				newlerr();
+				suc_flag = 1;
+			}
 			return;
 		}
 	}
 
+	// If the job number is invalid, display error message
 	write(2, "ash: bg: Invalid job number", strlen("ash: bg: Invalid job number"));
-	newl();
+	newlerr();
+	suc_flag = 1;
 }

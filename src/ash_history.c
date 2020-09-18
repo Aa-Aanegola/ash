@@ -18,7 +18,8 @@ void ash_history_read()
 	if(space > 1)
 	{
 		write(2, "ash: history: invalid arguments", strlen("ash: history: invalid arguments"));
-		newl();
+		newlerr();
+		suc_flag = 1;
 		return;
 	}
 
@@ -62,7 +63,8 @@ void ash_history_read()
 		if(!c)
 		{
 			write(2, "ash: history: invalid argument", strlen("ash: history: invalid argument"));
-			newl();
+			newlerr();
+			suc_flag = 1;
 			return;
 		}
 	}

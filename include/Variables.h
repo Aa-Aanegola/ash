@@ -25,6 +25,8 @@ char command_word[MIN_COMM];
 // The directory from which the shell is invoked, short for home directory
 char home_dir[MAX_COMM];
 
+// The previous directory
+char prev_dir[MAX_COMM];
 // The directory that is currently open, short for current directory
 char cur_dir[MAX_COMM];
 
@@ -39,6 +41,9 @@ char target[MAX_COMM];
 
 // Universal flag to signify exit from program
 int uflag;
+
+// Flag that indicates whether a process exited successfully
+int suc_flag;
 
 // Pool for all child processes
 child_proc proc_array[POOL_SIZE];

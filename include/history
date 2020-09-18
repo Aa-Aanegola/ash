@@ -1,39 +1,39 @@
 q
 clear
 
-fg 1
-
-gedit
+echo $x
 
 clear
 
-bg 1
+cat $x
 
-fg 1
-
-fg 1
-
-fg 1
-
-fg 1
-
-jobs
-
-vim
-
-fg 1
-
-jobs
-
-gedit
+setenv x 5
 
 clear
+
+ls -a @ ls -q
 
 q
-
-make
 
 clear
 
 claer
+
+x
+
+echo $x
+
+clear
+
+$x
+
+env
+
+setenv x 5
+
+q
+
+clear
+
+ps -q
 

@@ -35,9 +35,10 @@ void ash_pinfo()
 	if(!dir)
 	{
 		write(2, "ash: pinfo: Process ID doesn't exist", strlen("ash: pinfo: Process ID doesn't exist"));
-		newl();
+		newlerr();
 		closedir(dir);
 		free(temp);
+		suc_flag = 1;
 		return;
 	}
 	closedir(dir);
