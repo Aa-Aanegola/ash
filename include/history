@@ -1,6 +1,16 @@
 q
 clear
 
+ps -a > a @ ls -q
+
+ls -q
+
+clear
+
+q
+
+clear
+
 echo $x
 
 clear
@@ -26,14 +36,4 @@ echo $x
 clear
 
 $x
-
-env
-
-setenv x 5
-
-q
-
-clear
-
-ps -q
 

@@ -113,14 +113,13 @@ Syntax : ```overkill```
 #### quit
 Syntax : ```quit```
 	Exits the shell.
+	Aliases : ```q```, ```exit```
 ## Assumptions
 Ash is designed to be used for normal day to day needs and hence certain reasonable assumptions were made on the length of directory, file and command names.  
 Since this shell has been created in an attempt to learn, error handling is not very robust and ash is not intended to be stress-tested.  
 Only 1024 background processes can be created in every ash instance.  
 History size is limited to 20, but can be increased by tweaking the value in the Shell.h header file.  
 Pinfo reads from the /proc/pid/stat file and hence its usage is restricted to linux kernels.  
-Interrupt handling has not been implemented yet.  
 ## Future updates
-Support for piping, redirection, and proper interrupt handling.  
 Color schemes, and output formatting for visual aesthetics.  
 Manual entries for new functions that come with the shell.  
