@@ -55,7 +55,7 @@ void ash_pipe()
 	token = strtok(dup_in, "|");
 
 
-	int new_in = 0;
+	int new_in = STDIN_FILENO;
 	pid_t pid;
 
 	// For every | character, make a pipe. The first command reads from stdin, and the last command writes to stdout

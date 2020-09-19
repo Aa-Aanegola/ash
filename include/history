@@ -1,39 +1,39 @@
 q
 clear
 
-ps -a > a @ ls -q
-
-ls -q
+overkill
 
 clear
 
-q
-
-clear
-
-echo $x
-
-clear
-
-cat $x
-
-setenv x 5
-
-clear
+ls -a $ ls -q
 
 ls -a @ ls -q
 
+clear
+
+cler
+
+jobs
+
+bg 1
+
+jobs
+
+clear
+
+fg 1
+
+jobs
+
+gedit &
+
+q
+
 q
 
 clear
 
-claer
+ps -a > a @ ls -q
 
-x
-
-echo $x
-
-clear
-
-$x
+ls -q
 
