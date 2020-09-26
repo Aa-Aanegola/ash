@@ -16,6 +16,7 @@ void ash_chain()
 
 	read_in[0] = '\0';
 	int pos = 0;
+	int skip = 0;
 
 	// Iterate over the input string and look for @ and $
 	for(int i = 0; i<=strlen(dup_in); i++)
@@ -27,6 +28,7 @@ void ash_chain()
 			pos = 0;
 
 			// Execute the command
+		
 			if(strlen(read_in))
 				ash_pipe();
 			if(strlen(read_in))
@@ -39,10 +41,9 @@ void ash_chain()
 			if(i == strlen(dup_in))
 				return;
 
-			// If we have an and operation, and command was unsuccessful return
+			// If we have an and operation, and command was unsuccessful skip the next command
 			if(dup_in[i] == '@' && suc_flag == 1)
 				return;
-
 			// If we have an or operation, and command was successful return
 			if(dup_in[i] == '$' && suc_flag == 0)
 				return;

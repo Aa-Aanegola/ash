@@ -82,6 +82,7 @@ void ash_general()
 		{
 			write(2, "ash: Command not found", strlen("ash: Command not found"));
 			newlerr();
+			suc_flag = 1;
 			exit(1);
 		}
 		exit(1);
@@ -89,19 +90,23 @@ void ash_general()
 
 	// Parent process
 	else
-	{	
+	{
+		int status;
 		// If background, add to pool and exit
 		if(is_background)
 		{
-			push_child(pid);
 			usleep(100000);
+			push_child(pid);
 			return;
 		}
 		// If not background wait for the process to terminate
 		
 		fore_proc.pid = pid;
 		strcpy(fore_proc.name, command_word);	
-		waitpid(pid, NULL, WUNTRACED);
+		waitpid(pid, &status, WUNTRACED);
+		if(WEXITSTATUS(status))
+			suc_flag = 1;
+
 		fore_proc.pid = -1;
 	}
 }

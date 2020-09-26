@@ -57,7 +57,7 @@ void ash_fg()
 			int status;
 			signal(SIGTTOU, SIG_IGN);
 			signal(SIGTTIN, SIG_IGN);
-			tcsetpgrp(STDIN_FILENO, proc_array[i].pid);
+			tcsetpgrp(STDIN_FILENO, getpgid(proc_array[i].pid));
 			
 			// Try sending SIGCONT signal, and handle errors
 			if(kill(proc_array[i].pid, SIGCONT) < 0)
@@ -77,7 +77,7 @@ void ash_fg()
 			fore_proc.pid = -1;
 
 			// Set the signal handlers back to default, and set the shell to foreground
-			tcsetpgrp(STDIN_FILENO, par_pid);
+			tcsetpgrp(STDIN_FILENO, getpgid(par_pid));
 			signal(SIGTTIN, SIG_DFL);
 			signal(SIGTTOU, SIG_DFL);
 

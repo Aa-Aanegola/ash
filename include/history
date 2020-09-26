@@ -1,23 +1,17 @@
 q
 clear
 
-overkill
-
-clear
-
-ls -a $ ls -q
-
-ls -a @ ls -q
-
-clear
-
-cler
+kjob 1 9
 
 jobs
 
-bg 1
+fg 1
 
-jobs
+fg 1
+
+gedit
+
+q
 
 clear
 
@@ -25,15 +19,21 @@ fg 1
 
 jobs
 
-gedit &
+fg 1
 
-q
+fg 1
 
-q
+jobs
+
+fg 1
+
+fg 1
+
+gedit
 
 clear
 
-ps -a > a @ ls -q
+fg 1
 
-ls -q
+jobs
 

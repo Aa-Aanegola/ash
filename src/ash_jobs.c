@@ -23,6 +23,9 @@ void init_child_proc()
 void push_child(pid_t pid)
 {
 	for(int i = 0; i<POOL_SIZE; i++)
+		if(proc_array[i].pid == pid)
+			return;
+	for(int i = 0; i<POOL_SIZE; i++)
 	{
 		if(proc_array[i].pid == -1)
 		{
