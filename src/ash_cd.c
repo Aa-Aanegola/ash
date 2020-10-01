@@ -61,5 +61,7 @@ void ash_cd()
 	getcwd(prev_dir, sizeof(prev_dir));
 	// Change directory and update the display name
 	chdir(target);
+	if(!strcmp(spec_dir, "-"))
+		ash_pwd();
 	update_disp();
 }

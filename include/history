@@ -1,39 +1,39 @@
 q
 clear
 
-kjob 1 9
-
-jobs
-
-fg 1
-
-fg 1
-
 gedit
+
+gedit &
+
+clear
 
 q
 
 clear
 
-fg 1
+gedit &
 
-jobs
+q
 
-fg 1
-
-fg 1
-
-jobs
-
-fg 1
-
-fg 1
-
-gedit
+ls
 
 clear
 
-fg 1
+gedit &
 
-jobs
+gedit &
+
+q
+
+clear
+
+gedit &
+
+gedit &
+
+gedit &
+
+q
+
+clear
 

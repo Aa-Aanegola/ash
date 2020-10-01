@@ -15,7 +15,17 @@ void ash_main()
 	
 	fflush(0);
 
+	buffer_command[0] = '\0';
 	take_inp();
+
+	if(buffer_command[0] == '\0')
+	{
+		uflag = 1;
+		return;
+	}
+	clean_string(buffer_command);
+
+
 	int pos = 0, bre = 0;
 	while(1)
 	{
@@ -45,9 +55,6 @@ void ash_main()
 		clean_string(read_in);
 		ash_history_write();
 		
-		// In case we have chaining commands
-		ash_chain();
-
 		if(!strlen(read_in))
 			continue;
 	

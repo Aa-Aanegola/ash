@@ -78,7 +78,6 @@ void z_handler(int sig, siginfo_t* info, void* vp);
 // Handles Ctrl+C
 void c_handler(int sig, siginfo_t* info, void* vp);
 
-
 // Reads from history, implementation of history command
 void ash_history_read();
 
@@ -123,7 +122,4 @@ void ash_bg();
 
 // Brings a process to the foreground
 void ash_fg();
-
-// Chaining commands
-void ash_chain();
 #endif

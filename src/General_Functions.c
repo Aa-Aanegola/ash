@@ -19,7 +19,6 @@ void clear_disp()
 void take_inp()
 {
 	fgets(buffer_command, sizeof(buffer_command), stdin);
-	clean_string(buffer_command);
 }
 
 

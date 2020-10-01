@@ -32,7 +32,7 @@ void ash_redir()
 			flag[0] = 1;
 
 			token = strtok(0, " ");
-			if(token == NULL || flag[0])
+			if(token == NULL)
 			{
 				flag[3] = 1;
 				break;
@@ -57,7 +57,7 @@ void ash_redir()
 			flag[1] = 1;
 
 			token = strtok(0, " ");
-			if(token == NULL || flag[1])
+			if(token == NULL)
 			{
 				flag[3] = 1;
 				break;
@@ -73,7 +73,7 @@ void ash_redir()
 			flag[2] = 1;
 
 			token = strtok(0, " ");
-			if(token == NULL || flag[2])
+			if(token == NULL)
 			{
 				flag[3] = 1;
 				break;
