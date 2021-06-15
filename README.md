@@ -3,14 +3,14 @@
 ASH is a shell coded in C that emulates the behavior of BASH. Some functions were coded from scratch, while others are run using the exec() family of functions.
 ## How to use
 Download all the files and put them in a directory. Use the ```cd``` command to navigate to the directory, and then run the ```make``` command. This will create an executable ```ash``` which can be run using the command ```./ash```. If the executable does not have execute permissions, please run ```chmod +x ash``` to provide execute permissions. ASH should start in the same terminal.
-## Features
-Semicolon seperated commands provide the ability to run multiple commands concurrently.  
-Implementations of ls, cd, echo etc.  
-A new pinfo function that allows you to view basic information of any process.
-Background process functionality allows you to run any command in the background, and still use your shell.  
-A history function to keep a track of entered commands.
-Support for piping and redirection.  
-Command chaining using logical and/or.   
+## Highlighted Features
+- Semicolon seperated commands provide the ability to run multiple commands concurrently.  
+- Implementations of ls, cd, echo etc.  
+- A new pinfo function that allows you to view basic information of any process.
+- Background process functionality allows you to run any command in the background, and still use your shell.  
+- A history function to keep a track of entered commands.
+- Support for piping and redirection.  
+- Command chaining using logical and/or.   
 ## File Structure
 ### include
 #### Shell.h
@@ -121,5 +121,5 @@ Only 1024 background processes can be created in every ash instance.
 History size is limited to 20, but can be increased by tweaking the value in the Shell.h header file.  
 Pinfo reads from the /proc/pid/stat file and hence its usage is restricted to linux kernels.  
 ## Future updates
-Color schemes, and output formatting for visual aesthetics.  
-Manual entries for new functions that come with the shell.  
+- Color schemes, and output formatting for visual aesthetics.  
+- Manual entries for new functions that come with the shell.  
